@@ -22,9 +22,9 @@ class MarketDashboard extends Component
     // Ledger Modal State
     public $activeCustomer = null;
     public $ledgerPage = 1;
-    public $perPage = 15;
+    public $perPage = 5;
     
-    public $customersPerPage = 20;
+    public $customersPerPage = 5;
 
     // New / Edit Transaction
     public $txType = 'debt';
