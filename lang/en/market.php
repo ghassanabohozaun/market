@@ -71,4 +71,5 @@ return [
     'phone' => 'Phone Number',
     'balance' => 'Balance',
     'total_transactions' => 'Total Transactions',
+    'customer_has_transactions' => 'This customer cannot be deleted because they have associated financial transactions',
 ];

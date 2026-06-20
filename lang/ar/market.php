@@ -71,4 +71,5 @@ return [
     'phone' => 'رقم الهاتف',
     'balance' => 'الرصيد',
     'total_transactions' => 'عدد الحركات',
+    'customer_has_transactions' => 'لا يمكن حذف هذا العميل لوجود حركات مالية مرتبطة به',
 ];
