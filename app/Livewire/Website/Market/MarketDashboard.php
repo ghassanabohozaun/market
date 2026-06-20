@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Website\Market;
 
+use App\Models\MarketCustomer;
+use App\Models\MarketTransaction;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class MarketDashboard extends Component
@@ -44,7 +47,7 @@ class MarketDashboard extends Component
             'newCustomerName' => 'required|string|max:255',
             'newCustomerPhone' => 'nullable|string|max:10',
         ]);
-        $this->activeCustomer = \App\Models\MarketCustomer::create([
+        $this->activeCustomer = MarketCustomer::create([
             'name' => $this->newCustomerName,
             'phone' => $this->newCustomerPhone,
         ]);
@@ -64,7 +67,7 @@ class MarketDashboard extends Component
 
     public function openLedger($customerId)
     {
-        $this->activeCustomer = \App\Models\MarketCustomer::find($customerId);
+        $this->activeCustomer = MarketCustomer::find($customerId);
         $this->ledgerPage = 1;
         $this->dispatch('open-modal', id: 'ledgerModal');
     }
@@ -84,7 +87,7 @@ class MarketDashboard extends Component
 
     public function editTransaction($id)
     {
-        $tx = \App\Models\MarketTransaction::find($id);
+        $tx = MarketTransaction::find($id);
         if (!$tx) return;
 
         $this->editingTxId = $tx->id;
@@ -96,7 +99,7 @@ class MarketDashboard extends Component
 
     public function deleteTransaction($id)
     {
-        $tx = \App\Models\MarketTransaction::find($id);
+        $tx = MarketTransaction::find($id);
         if ($tx) {
             $tx->delete();
             $this->activeCustomer->refresh();
@@ -119,7 +122,7 @@ class MarketDashboard extends Component
         if (!$this->activeCustomer) return;
 
         if ($this->editingTxId) {
-            $tx = \App\Models\MarketTransaction::find($this->editingTxId);
+            $tx = MarketTransaction::find($this->editingTxId);
             if ($tx) {
                 $tx->update([
                     'type' => $this->txType,
@@ -134,7 +137,7 @@ class MarketDashboard extends Component
                 ]);
             }
         } else {
-            \App\Models\MarketTransaction::create([
+            MarketTransaction::create([
                 'market_customer_id' => $this->activeCustomer->id,
                 'type' => $this->txType,
                 'amount' => $this->txAmount,
@@ -155,7 +158,7 @@ class MarketDashboard extends Component
 
     public function render()
     {
-        $query = \App\Models\MarketCustomer::query();
+        $query = MarketCustomer::query();
 
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%');
@@ -169,9 +172,9 @@ class MarketDashboard extends Component
 
         $customers = $query->latest()->paginate(20);
 
-        $totalDebt = \App\Models\MarketCustomer::where('balance', '>', 0)->sum('balance');
-        $todayCollections = \App\Models\MarketTransaction::where('type', 'payment')
-            ->whereDate('created_at', \Carbon\Carbon::today())
+        $totalDebt = MarketCustomer::where('balance', '>', 0)->sum('balance');
+        $todayCollections = MarketTransaction::where('type', 'payment')
+            ->whereDate('created_at', Carbon::today())
             ->sum('amount');
 
         $ledgerTransactions = [];
