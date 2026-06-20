@@ -150,9 +150,17 @@
             @endforeach
             
             @if($totalCustomers > count($customers))
-                <button wire:click="loadMoreCustomers" class="w-full py-4 mt-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center justify-center gap-1 border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
-                    {{ __('market.load_more_customers') }} <i class="ph-bold ph-caret-down"></i>
-                </button>
+                <div class="mt-8 mb-4 flex justify-center">
+                    <button wire:click="loadMoreCustomers" class="group relative px-6 py-3 text-sm font-bold text-primary bg-primary/10 hover:bg-primary hover:text-white dark:bg-emerald-500/10 dark:hover:bg-emerald-500 dark:text-emerald-400 dark:hover:text-white rounded-full transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden shadow-sm hover:shadow-md hover:shadow-primary/20 active:scale-95">
+                        <span wire:loading.remove wire:target="loadMoreCustomers" class="flex items-center gap-2">
+                            {{ __('market.load_more_customers') }} 
+                            <i class="ph-bold ph-caret-down group-hover:translate-y-0.5 transition-transform"></i>
+                        </span>
+                        <span wire:loading wire:target="loadMoreCustomers" class="flex items-center gap-2">
+                            <i class="ph-bold ph-spinner animate-spin text-lg"></i> {{ __('market.updating') }}
+                        </span>
+                    </button>
+                </div>
             @endif
         </div>
         @endif
@@ -302,9 +310,16 @@
                     @endforeach
 
                     @if($totalLedgerTransactions > count($ledgerTransactions))
-                    <button wire:click="loadMoreLedger" class="w-full py-4 mt-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center justify-center gap-1 border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
-                        {{ __('market.show_older_transactions') }} <i class="ph-bold ph-caret-down"></i>
-                    </button>
+                    <div class="mt-6 flex justify-center pb-2">
+                        <button wire:click="loadMoreLedger" class="group relative px-5 py-2.5 text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-full transition-all duration-300 flex items-center justify-center gap-2 active:scale-95">
+                            <span wire:loading.remove wire:target="loadMoreLedger" class="flex items-center gap-2">
+                                {{ __('market.show_older_transactions') }} <i class="ph-bold ph-caret-down group-hover:translate-y-0.5 transition-transform"></i>
+                            </span>
+                            <span wire:loading wire:target="loadMoreLedger" class="flex items-center gap-2">
+                                <i class="ph-bold ph-spinner animate-spin"></i> {{ __('market.updating') }}
+                            </span>
+                        </button>
+                    </div>
                     @endif
                 @endif
             </div>

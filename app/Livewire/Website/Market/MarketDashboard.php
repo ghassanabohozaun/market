@@ -24,7 +24,7 @@ class MarketDashboard extends Component
     public $ledgerPage = 1;
     public $perPage = 15;
     
-    public $customersPerPage = 20;
+    public $customersPerPage = 5;
 
     // New / Edit Transaction
     public $txType = 'debt';
