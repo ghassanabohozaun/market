@@ -43,7 +43,7 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">{{ __('market.active_customers') }}</p>
-                    <h4 class="text-lg font-black text-gray-800 dark:text-gray-100 leading-tight">{{ $customers->total() }}</h4>
+                    <h4 class="text-lg font-black text-gray-800 dark:text-gray-100 leading-tight">{{ $totalCustomers }}</h4>
                 </div>
             </div>
             
