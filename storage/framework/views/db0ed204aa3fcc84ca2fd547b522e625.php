@@ -43,6 +43,7 @@
     <!-- Scripts -->
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
+    <script src="<?php echo e(asset('assets/website/vendor/sweetalert2/sweetalert2.all.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/website/toast.js')); ?>?v=<?php echo e(time()); ?>"></script>
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>

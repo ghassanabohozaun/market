@@ -346,7 +346,29 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                     <i class="ph-bold ph-pencil-simple"></i> <?php echo e(__('market.edit')); ?>
 
                                 </button>
-                                <button wire:click="deleteTransaction(<?php echo e($tx->id); ?>)" wire:confirm="<?php echo e(__('market.confirm_delete_transaction')); ?>" class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <button type="button" x-data x-on:click="
+                                    Swal.fire({
+                                        title: '<?php echo e(__('market.are_you_sure')); ?>',
+                                        text: '<?php echo e(__('market.confirm_delete_transaction')); ?>',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        buttonsStyling: false,
+                                        customClass: {
+                                            popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b]',
+                                            title: 'text-lg font-black text-gray-800 dark:text-gray-100',
+                                            htmlContainer: 'text-sm font-medium text-gray-500 dark:text-gray-400 mt-2',
+                                            actions: 'gap-3 mt-6 flex w-full px-6 pb-2',
+                                            confirmButton: 'flex-1 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 font-bold rounded-xl px-4 py-3 transition-colors',
+                                            cancelButton: 'flex-1 bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 font-bold rounded-xl px-4 py-3 transition-colors'
+                                        },
+                                        confirmButtonText: '<?php echo e(__('market.yes_delete')); ?>',
+                                        cancelButtonText: '<?php echo e(__('market.cancel')); ?>'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $wire.deleteTransaction(<?php echo e($tx->id); ?>);
+                                        }
+                                    })
+                                " class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
                                     <i class="ph-bold ph-trash"></i> <?php echo e(__('market.delete')); ?>
 
                                 </button>
