@@ -41,6 +41,7 @@
 
     <!-- Scripts -->
     @livewireScripts
+    <script src="{{ asset('assets/website/vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('assets/website/toast.js') }}?v={{ time() }}"></script>
     @stack('scripts')
 </body>

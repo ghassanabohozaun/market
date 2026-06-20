@@ -57,4 +57,8 @@ return [
     'registering' => 'جاري التسجيل...',
     'saving' => 'جاري الحفظ...',
     'load_more_customers' => 'عرض المزيد من الزبائن',
+    'are_you_sure' => 'هل أنت متأكد؟',
+    'yes_delete' => 'نعم، احذف',
+    'cancel' => 'إلغاء',
+    'warning' => 'تحذير',
 ];

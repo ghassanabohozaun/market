@@ -57,4 +57,8 @@ return [
     'registering' => 'Registering...',
     'saving' => 'Saving...',
     'load_more_customers' => 'Load More Customers',
+    'are_you_sure' => 'Are you sure?',
+    'yes_delete' => 'Yes, delete it',
+    'cancel' => 'Cancel',
+    'warning' => 'Warning',
 ];

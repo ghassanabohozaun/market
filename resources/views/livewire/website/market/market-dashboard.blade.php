@@ -320,7 +320,22 @@
                                 <button wire:click="editTransaction({{ $tx->id }})" class="flex-1 py-1.5 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
                                     <i class="ph-bold ph-pencil-simple"></i> {{ __('market.edit') }}
                                 </button>
-                                <button wire:click="deleteTransaction({{ $tx->id }})" wire:confirm="{{ __('market.confirm_delete_transaction') }}" class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <button type="button" x-data x-on:click="
+                                    Swal.fire({
+                                        title: '{{ __('market.are_you_sure') }}',
+                                        text: '{{ __('market.confirm_delete_transaction') }}',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#ef4444',
+                                        cancelButtonColor: '#6b7280',
+                                        confirmButtonText: '{{ __('market.yes_delete') }}',
+                                        cancelButtonText: '{{ __('market.cancel') }}'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $wire.deleteTransaction({{ $tx->id }});
+                                        }
+                                    })
+                                " class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
                                     <i class="ph-bold ph-trash"></i> {{ __('market.delete') }}
                                 </button>
                             </div>
