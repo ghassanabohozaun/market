@@ -56,4 +56,5 @@ return [
     'updating' => 'Updating...',
     'registering' => 'Registering...',
     'saving' => 'Saving...',
+    'load_more_customers' => 'Load More Customers',
 ];

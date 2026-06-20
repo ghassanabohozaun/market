@@ -56,4 +56,5 @@ return [
     'updating' => 'جاري التحديث...',
     'registering' => 'جاري التسجيل...',
     'saving' => 'جاري الحفظ...',
+    'load_more_customers' => 'عرض المزيد من الزبائن',
 ];

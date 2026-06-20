@@ -149,10 +149,10 @@
                 </div>
             @endforeach
             
-            @if($customers->hasPages())
-                <div class="mt-4">
-                    {{ $customers->links(data: ['scrollTo' => false]) }}
-                </div>
+            @if($totalCustomers > count($customers))
+                <button wire:click="loadMoreCustomers" class="w-full py-4 mt-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center justify-center gap-1 border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                    {{ __('market.load_more_customers') }} <i class="ph-bold ph-caret-down"></i>
+                </button>
             @endif
         </div>
         @endif

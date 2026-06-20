@@ -23,6 +23,8 @@ class MarketDashboard extends Component
     public $activeCustomer = null;
     public $ledgerPage = 1;
     public $perPage = 15;
+    
+    public $customersPerPage = 20;
 
     // New / Edit Transaction
     public $txType = 'debt';
@@ -39,6 +41,11 @@ class MarketDashboard extends Component
     {
         $this->filter = $filter;
         $this->resetPage();
+    }
+
+    public function loadMoreCustomers()
+    {
+        $this->customersPerPage += 20;
     }
 
     public function addCustomer()
@@ -170,7 +177,8 @@ class MarketDashboard extends Component
             $query->where('balance', '<=', 0);
         }
 
-        $customers = $query->latest()->paginate(20);
+        $totalCustomers = $query->count();
+        $customers = $query->latest()->take($this->customersPerPage)->get();
 
         $totalDebt = MarketCustomer::where('balance', '>', 0)->sum('balance');
         $todayCollections = MarketTransaction::where('type', 'payment')
@@ -189,6 +197,7 @@ class MarketDashboard extends Component
 
         return view('livewire.website.market.market-dashboard', [
             'customers' => $customers,
+            'totalCustomers' => $totalCustomers,
             'totalDebt' => $totalDebt,
             'todayCollections' => $todayCollections,
             'ledgerTransactions' => $ledgerTransactions,
