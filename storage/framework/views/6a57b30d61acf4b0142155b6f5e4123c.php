@@ -1,0 +1,468 @@
+<div id="app" class="max-w-md mx-auto min-h-screen relative pb-24 shadow-2xl bg-gray-50/50 dark:bg-[#0b1121] transition-colors duration-300">
+    <!-- Header -->
+    <header class="p-4 flex items-center justify-between border-b dark:border-gray-800 glass-effect sticky top-0 z-10 transition-colors duration-300">
+        <h1 class="text-xl font-bold text-primary flex items-center gap-2">
+            <img src="<?php echo setting()->logo ? asset('uploads/settings/' . setting()->logo) : asset('assets/dashboard/images/dokkana-logo.png'); ?>" alt="Logo" class="h-8 w-auto rounded shadow-sm">
+            <?php echo e(__('market.store_notebook')); ?>
+
+        </h1>
+        <div class="flex items-center gap-2">
+            <?php
+                $currentLocale = app()->getLocale();
+                $targetLocale = $currentLocale == 'ar' ? 'en' : 'ar';
+                $targetNative = LaravelLocalization::getSupportedLocales()[$targetLocale]['native'];
+            ?>
+            <a href="<?php echo e(LaravelLocalization::getLocalizedURL($targetLocale, null, [], true)); ?>" 
+               class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-95 text-gray-600 dark:text-gray-300 font-bold text-sm flex items-center gap-1">
+                <span><?php echo e($targetNative); ?></span>
+            </a>
+            <button id="themeToggleBtn" onclick="document.documentElement.classList.toggle('dark')" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-95">
+                <i class="ph-fill ph-moon text-xl dark:hidden text-gray-600"></i>
+                <i class="ph-fill ph-sun text-xl hidden dark:block text-yellow-400"></i>
+            </button>
+            <div wire:loading class="ml-2">
+                <i class="ph-bold ph-spinner animate-spin text-xl text-primary"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Metrics -->
+    <div class="p-4">
+        <div class="grid grid-cols-2 gap-3 mb-2">
+            <!-- Total Debt Card -->
+            <div class="col-span-2 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-[1.5rem] p-6 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden transition-all duration-300 hover:shadow-emerald-500/40 border border-emerald-400/20">
+                <!-- Decorative Elements -->
+                <div class="absolute -end-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -start-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                <div class="absolute top-0 end-0 p-4 opacity-10 pointer-events-none transform rtl:-scale-x-100">
+                    <i class="ph-fill ph-wallet text-8xl -mt-4 -me-4 -rotate-12"></i>
+                </div>
+                
+                <!-- Content -->
+                <div class="relative z-10 flex flex-col items-start">
+                    <div class="flex items-center gap-2 mb-2 opacity-90 bg-black/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10">
+                        <i class="ph-fill ph-coins text-white"></i>
+                        <p class="text-sm font-bold"><?php echo e(__('market.total_market_debts')); ?></p>
+                    </div>
+                    <div class="flex items-baseline gap-2 mt-1">
+                        <h2 class="text-4xl font-black tracking-tight drop-shadow-sm" dir="ltr"><?php echo e(number_format($totalDebt, 1)); ?></h2>
+                        <span class="text-lg font-bold opacity-80"><?php echo e(__('market.currency')); ?></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customers Card -->
+            <div class="bg-white dark:bg-darkCard rounded-[1.25rem] p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-3 transition-colors hover:border-primary/30">
+                <div class="w-11 h-11 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center shrink-0 shadow-sm border border-blue-100 dark:border-blue-900/50">
+                    <i class="ph-fill ph-users text-xl"></i>
+                </div>
+                <div class="flex flex-col items-start">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-bold whitespace-nowrap"><?php echo e(__('market.active_customers')); ?></p>
+                    <h4 class="text-xl font-black text-gray-800 dark:text-gray-100 leading-tight mt-0.5" dir="ltr"><?php echo e($totalCustomers); ?></h4>
+                </div>
+            </div>
+            
+            <!-- Today Collections Card -->
+            <div class="bg-white dark:bg-darkCard rounded-[1.25rem] p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-3 transition-colors hover:border-primary/30">
+                <div class="w-11 h-11 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center shrink-0 shadow-sm border border-emerald-100 dark:border-emerald-900/50">
+                    <i class="ph-fill ph-trend-up text-xl"></i>
+                </div>
+                <div class="flex flex-col items-start">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-bold whitespace-nowrap"><?php echo e(__('market.today_collections')); ?></p>
+                    <div class="flex items-baseline gap-1 mt-0.5">
+                        <h4 class="text-xl font-black text-gray-800 dark:text-gray-100 leading-tight" dir="ltr"><?php echo e(number_format($todayCollections, 1)); ?></h4>
+                        <span class="text-[11px] font-bold text-gray-400"><?php echo e(__('market.currency')); ?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="px-4 mb-4">
+        <div class="relative group mb-3">
+            <i class="ph ph-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-primary transition-colors"></i>
+            <input wire:model.live.debounce.300ms="search" type="text" placeholder="<?php echo e(__('market.search_customer')); ?>" class="w-full bg-white dark:bg-darkCard border border-gray-200 dark:border-gray-800 rounded-2xl py-3.5 pr-11 pl-4 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all text-gray-800 dark:text-gray-100 shadow-sm placeholder-gray-400">
+        </div>
+        <div class="flex gap-2 overflow-x-auto pb-1 hide-scrollbar">
+            <button wire:click="setFilter('all')" class="whitespace-nowrap px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-sm font-bold <?php echo e($filter === 'all' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300 bg-white dark:bg-darkCard'); ?>"><?php echo e(__('market.filter_all')); ?></button>
+            <button wire:click="setFilter('debt')" class="whitespace-nowrap px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-sm font-bold <?php echo e($filter === 'debt' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300 bg-white dark:bg-darkCard'); ?>"><?php echo e(__('market.filter_has_debt')); ?></button>
+            <button wire:click="setFilter('paid')" class="whitespace-nowrap px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-sm font-bold <?php echo e($filter === 'paid' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300 bg-white dark:bg-darkCard'); ?>"><?php echo e(__('market.filter_paid')); ?></button>
+        </div>
+    </div>
+
+    <!-- Customer List -->
+    <div class="px-4 pb-4 relative">
+        <div wire:loading.flex wire:target="search, setFilter" class="absolute inset-0 bg-white/50 dark:bg-black/50 z-10 flex items-center justify-center rounded-xl backdrop-blur-sm">
+            <i class="ph-bold ph-spinner-gap animate-spin text-4xl text-primary"></i>
+        </div>
+
+        <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400 mb-3 px-1"><?php echo e(__('market.customers_list')); ?></h3>
+        
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customers->isEmpty() && !$search && $filter === 'all'): ?>
+        <!-- Empty State -->
+        <div class="flex flex-col items-center justify-center py-16 text-gray-400">
+            <div class="w-24 h-24 mb-4 opacity-50">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full text-gray-300 dark:text-gray-600">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                </svg>
+            </div>
+            <p class="font-bold text-gray-600 dark:text-gray-300 text-lg mb-1"><?php echo e(__('market.no_customers_added')); ?></p>
+            <p class="text-sm text-gray-400 dark:text-gray-500"><?php echo e(__('market.click_to_add_first_customer')); ?></p>
+        </div>
+        <?php elseif($customers->isEmpty()): ?>
+        <!-- No Results -->
+        <div class="flex flex-col items-center justify-center py-16 text-gray-400">
+            <i class="ph-fill ph-magnifying-glass-minus text-5xl text-gray-300 dark:text-gray-600 mb-3"></i>
+            <p class="font-bold text-gray-500 dark:text-gray-400"><?php echo e(__('market.no_results')); ?></p>
+        </div>
+        <?php else: ?>
+        <div class="space-y-3">
+            <?php
+                $avatarColors = [
+                    'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400',
+                    'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
+                    'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
+                    'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
+                    'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
+                    'bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400',
+                    'bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400',
+                    'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+                    'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400',
+                    'bg-violet-100 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400',
+                    'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+                    'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/30 dark:text-fuchsia-400',
+                    'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400',
+                    'bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400'
+                ];
+            ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $idx => $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
+                    // Safe string to index hashing (prevents negative modulo & int overflow)
+                    $hashIndex = hexdec(substr(md5($customer->name), 0, 6)) % count($avatarColors);
+                    $colorClass = $avatarColors[$hashIndex];
+                    $lastTx = $customer->transactions->first() ? $customer->transactions->first()->created_at->format('Y-m-d') : __('market.no_transactions');
+                    $balance = $customer->balance;
+                    $isDebt = $balance > 0;
+                ?>
+                <div wire:click="openLedger(<?php echo e($customer->id); ?>)" class="bg-white dark:bg-darkCard p-4 rounded-[1.25rem] border border-gray-100 dark:border-gray-800 flex justify-between items-center cursor-pointer hover:border-primary/50 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shrink-0 shadow-sm <?php echo e($colorClass); ?>">
+                            <?php echo e(mb_substr($customer->name, 0, 1)); ?>
+
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 dark:text-gray-100 text-base leading-tight"><?php echo e($customer->name); ?></h4>
+                            <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 font-medium flex items-center gap-1">
+                                <i class="ph-fill ph-clock text-xs"></i> <?php echo e($lastTx); ?>
+
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-left flex flex-col items-end">
+                        <span class="font-black text-lg <?php echo e($isDebt ? 'text-red-500' : ($balance < 0 ? 'text-emerald-500' : 'text-gray-500 dark:text-gray-400')); ?> leading-tight">
+                            <?php echo e(number_format(abs($balance), 1)); ?>
+
+                        </span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 <?php echo e($isDebt ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : ($balance < 0 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400')); ?>">
+                            <?php echo e($isDebt ? __('market.owes_debt') : ($balance < 0 ? __('market.has_credit') : __('market.paid'))); ?>
+
+                        </span>
+                    </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($totalCustomers > count($customers)): ?>
+                <div class="mt-8 mb-4 flex justify-center">
+                    <button wire:click="loadMoreCustomers" class="group relative px-6 py-3 text-sm font-bold text-primary bg-primary/10 hover:bg-primary hover:text-white dark:bg-emerald-500/10 dark:hover:bg-emerald-500 dark:text-emerald-400 dark:hover:text-white rounded-full transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden shadow-sm hover:shadow-md hover:shadow-primary/20 active:scale-95">
+                        <span wire:loading.remove wire:target="loadMoreCustomers" class="flex items-center gap-2">
+                            <?php echo e(__('market.load_more_customers')); ?> 
+                            <i class="ph-bold ph-caret-down group-hover:translate-y-0.5 transition-transform"></i>
+                        </span>
+                        <span wire:loading wire:target="loadMoreCustomers" class="flex items-center gap-2">
+                            <i class="ph-bold ph-spinner animate-spin text-lg"></i> <?php echo e(__('market.updating')); ?>
+
+                        </span>
+                    </button>
+                </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        </div>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    </div>
+
+    <!-- Add Customer FAB -->
+    <button x-data x-on:click="$dispatch('open-modal', { id: 'addCustomerModal' })" class="fixed bottom-6 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-6 bg-primary hover:bg-emerald-600 text-white w-16 h-16 rounded-2xl shadow-[0_8px_30px_rgb(16,185,129,0.4)] flex items-center justify-center transition-all hover:-translate-y-1 active:scale-95 z-20 focus:outline-none focus:ring-4 focus:ring-emerald-500/30 group">
+        <i class="ph-bold ph-plus text-3xl group-hover:rotate-90 transition-transform duration-300"></i>
+    </button>
+
+    <!-- Modals -->
+    <!-- Add Customer Modal -->
+    <div x-data="{ show: false }" 
+         x-show="show" 
+         x-on:open-modal.window="if ($event.detail.id === 'addCustomerModal') show = true"
+         x-on:close-modal.window="if ($event.detail.id === 'addCustomerModal') show = false"
+         style="display: none;"
+         class="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+        <div x-show="show" x-transition.opacity class="fixed inset-0 bg-gray-900/75 dark:bg-black/85" x-on:click="show = false"></div>
+        <div x-show="show" x-transition.translate.y.bottom class="relative bg-white dark:bg-darkCard w-full max-w-md rounded-t-[2rem] sm:rounded-3xl p-6 shadow-2xl border border-white/10 z-10">
+            <div class="w-12 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-6 sm:hidden"></div>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <i class="ph-fill ph-user-plus text-primary text-2xl"></i>
+                    <?php echo e(__('market.add_new_customer')); ?>
+
+                </h2>
+                <button x-on:click="show = false" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+            <form wire:submit.prevent="addCustomer" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold mb-1.5 text-gray-700 dark:text-gray-300"><?php echo e(__('market.name')); ?> <span class="text-red-500">*</span></label>
+                    <input wire:model="newCustomerName" type="text" required class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-gray-900 dark:text-white placeholder-gray-400">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['newCustomerName'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-1.5 text-gray-700 dark:text-gray-300"><?php echo e(__('market.phone_optional')); ?></label>
+                    <input wire:model="newCustomerPhone" type="tel" maxlength="10" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-gray-900 dark:text-white placeholder-gray-400" dir="ltr" placeholder="05...">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['newCustomerPhone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white font-bold rounded-xl py-3.5 mt-4 hover:bg-emerald-600 transition-colors active:scale-[0.98] shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                    <span wire:loading.remove wire:target="addCustomer"><?php echo e(__('market.save_customer_data')); ?></span>
+                    <span wire:loading wire:target="addCustomer"><i class="ph-bold ph-spinner animate-spin"></i> <?php echo e(__('market.saving')); ?></span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customer Ledger Modal -->
+    <div x-data="{ show: false }" 
+         x-show="show" 
+         x-on:open-modal.window="if ($event.detail.id === 'ledgerModal') show = true"
+         x-on:close-modal.window="if ($event.detail.id === 'ledgerModal') show = false"
+         style="display: none;"
+         class="fixed inset-0 z-40 flex flex-col items-center justify-end sm:justify-center">
+        <div x-show="show" x-transition.opacity class="fixed inset-0 bg-gray-900/75 dark:bg-black/85" x-on:click="show = false"></div>
+        <div x-show="show" x-transition.translate.y.bottom class="relative bg-gray-50 dark:bg-dark w-full max-w-md h-[92vh] sm:h-[85vh] rounded-t-[2rem] sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden border border-white/10 z-10">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($activeCustomer): ?>
+            <!-- Header -->
+            <div class="p-5 border-b dark:border-gray-800 flex justify-between items-center bg-white dark:bg-darkCard z-10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xl">
+                        <span><?php echo e(mb_substr($activeCustomer->name, 0, 1)); ?></span>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg text-gray-900 dark:text-white"><?php echo e($activeCustomer->name); ?></h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5 font-medium"><?php echo $activeCustomer->phone ? '<i class="ph-fill ph-phone text-xs"></i> ' . $activeCustomer->phone : '-'; ?></p>
+                    </div>
+                </div>
+                <button x-on:click="show = false" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Balance & Actions -->
+            <div class="p-5 bg-white dark:bg-darkCard shadow-sm z-10 relative shrink-0">
+                <div class="flex justify-between items-end mb-5">
+                    <div>
+                        <p class="text-sm font-bold text-gray-500 dark:text-gray-400 mb-1"><?php echo e(__('market.current_balance')); ?></p>
+                        <h3 class="text-3xl font-black tracking-tight <?php echo e($activeCustomer->balance > 0 ? 'text-red-500' : ($activeCustomer->balance < 0 ? 'text-emerald-500' : 'text-gray-800 dark:text-white')); ?>">
+                            <?php echo e(number_format(abs($activeCustomer->balance), 1)); ?> <span class="text-base font-normal opacity-80"><?php echo e(__('market.currency')); ?></span>
+                        </h3>
+                    </div>
+                    <div class="text-xs font-bold px-3 py-1.5 rounded-full <?php echo e($activeCustomer->balance > 0 ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : ($activeCustomer->balance < 0 ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400')); ?>">
+                        <?php echo e($activeCustomer->balance > 0 ? __('market.owes_debt') : ($activeCustomer->balance < 0 ? __('market.has_credit') : __('market.paid'))); ?>
+
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button wire:click="openTxModal('debt')" class="flex flex-col items-center justify-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 py-3 rounded-[1rem] font-bold transition-all active:scale-95 border border-red-100 dark:border-red-900/30 group">
+                        <div class="w-10 h-10 rounded-full bg-white dark:bg-red-900/40 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-minus text-xl"></i>
+                        </div>
+                        <?php echo e(__('market.new_debt')); ?>
+
+                    </button>
+                    <button wire:click="openTxModal('payment')" class="flex flex-col items-center justify-center gap-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:hover:bg-emerald-900/40 dark:text-emerald-400 py-3 rounded-[1rem] font-bold transition-all active:scale-95 border border-emerald-100 dark:border-emerald-900/30 group">
+                        <div class="w-10 h-10 rounded-full bg-white dark:bg-emerald-900/40 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-plus text-xl"></i>
+                        </div>
+                        <?php echo e(__('market.payment_transfer')); ?>
+
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transaction List -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50 dark:bg-[#0b1121] custom-scrollbar relative">
+                <div wire:loading.flex wire:target="loadMoreLedger" class="absolute inset-0 bg-white/50 dark:bg-black/50 z-10 flex items-center justify-center rounded-xl backdrop-blur-sm">
+                    <i class="ph-bold ph-spinner-gap animate-spin text-4xl text-primary"></i>
+                </div>
+
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($ledgerTransactions) === 0): ?>
+                <div class="flex flex-col items-center justify-center py-16 text-gray-400">
+                    <i class="ph-fill ph-receipt text-5xl mb-3 text-gray-300 dark:text-gray-600 opacity-50"></i>
+                    <p class="text-sm font-bold"><?php echo e(__('market.no_registered_transactions')); ?></p>
+                </div>
+                <?php else: ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $ledgerTransactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tx): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
+                            $isDebt = $tx->type === 'debt';
+                        ?>
+                        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 <?php echo e($isDebt ? 'bg-red-50 text-red-500 dark:bg-red-900/20' : 'bg-emerald-50 text-emerald-500 dark:bg-emerald-900/20'); ?>">
+                                        <i class="ph-bold <?php echo e($isDebt ? 'ph-arrow-up-right' : 'ph-arrow-down-left'); ?> text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-sm text-gray-900 dark:text-gray-100"><?php echo e($tx->description); ?></p>
+                                        <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 font-medium flex items-center gap-1">
+                                            <i class="ph-fill ph-calendar text-xs"></i> <?php echo e($tx->created_at->format('Y-m-d')); ?> - <?php echo e($tx->created_at->format('H:i')); ?>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="text-left font-black shrink-0 text-lg <?php echo e($isDebt ? 'text-red-500' : 'text-emerald-500'); ?>">
+                                    <?php echo e($isDebt ? '+' : '-'); ?><?php echo e(number_format($tx->amount, 1)); ?> <span class="text-[10px] font-normal">₪</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 border-t dark:border-gray-800 pt-3 mt-1">
+                                <button wire:click="editTransaction(<?php echo e($tx->id); ?>)" class="flex-1 py-1.5 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-pencil-simple"></i> <?php echo e(__('market.edit')); ?>
+
+                                </button>
+                                <button type="button" x-data x-on:click="
+                                    Swal.fire({
+                                        html: `
+                                            <div class='flex flex-col items-center'>
+                                                <div class='w-16 h-16 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full flex items-center justify-center mb-4'>
+                                                    <i class='ph-fill ph-warning text-4xl animate-pulse'></i>
+                                                </div>
+                                                <h3 class='text-xl font-black text-gray-800 dark:text-gray-100 mb-2'><?php echo e(__('market.are_you_sure')); ?></h3>
+                                                <p class='text-sm font-medium text-gray-500 dark:text-gray-400'><?php echo e(__('market.confirm_delete_transaction')); ?></p>
+                                            </div>
+                                        `,
+                                        showCancelButton: true,
+                                        showClass: {
+                                            popup: 'animate-warningPop',
+                                            backdrop: 'swal2-backdrop-show'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate-swalHide',
+                                            backdrop: 'swal2-backdrop-hide'
+                                        },
+                                        buttonsStyling: false,
+                                        customClass: {
+                                            popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b] !pt-6',
+                                            htmlContainer: '!m-0 !p-0',
+                                            actions: 'gap-3 mt-6 flex w-full px-6 pb-2',
+                                            confirmButton: 'flex-1 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 font-bold rounded-xl px-4 py-3 transition-colors',
+                                            cancelButton: 'flex-1 bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 font-bold rounded-xl px-4 py-3 transition-colors'
+                                        },
+                                        confirmButtonText: '<?php echo e(__('market.yes_delete')); ?>',
+                                        cancelButtonText: '<?php echo e(__('market.cancel')); ?>'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $wire.deleteTransaction(<?php echo e($tx->id); ?>);
+                                        }
+                                    })
+                                " class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-trash"></i> <?php echo e(__('market.delete')); ?>
+
+                                </button>
+                            </div>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($totalLedgerTransactions > count($ledgerTransactions)): ?>
+                    <div class="mt-6 flex justify-center pb-2">
+                        <button wire:click="loadMoreLedger" class="group relative px-5 py-2.5 text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-full transition-all duration-300 flex items-center justify-center gap-2 active:scale-95">
+                            <span wire:loading.remove wire:target="loadMoreLedger" class="flex items-center gap-2">
+                                <?php echo e(__('market.show_older_transactions')); ?> <i class="ph-bold ph-caret-down group-hover:translate-y-0.5 transition-transform"></i>
+                            </span>
+                            <span wire:loading wire:target="loadMoreLedger" class="flex items-center gap-2">
+                                <i class="ph-bold ph-spinner animate-spin"></i> <?php echo e(__('market.updating')); ?>
+
+                            </span>
+                        </button>
+                    </div>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div x-data="{ show: false }" 
+         x-show="show" 
+         x-on:open-modal.window="if ($event.detail.id === 'transactionModal') show = true"
+         x-on:close-modal.window="if ($event.detail.id === 'transactionModal') show = false"
+         style="display: none;"
+         class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center">
+        <div x-show="show" x-transition.opacity class="fixed inset-0 bg-gray-900/75 dark:bg-black/85" x-on:click="show = false"></div>
+        <div x-show="show" x-transition.translate.y.bottom class="relative bg-white dark:bg-darkCard w-full max-w-md rounded-t-[2rem] sm:rounded-3xl p-6 shadow-2xl border border-white/10 z-10">
+            <div class="w-12 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-6 sm:hidden"></div>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <i class="ph-fill <?php echo e($txType === 'debt' ? 'ph-minus-circle text-red-500' : 'ph-plus-circle text-emerald-500'); ?> text-2xl"></i>
+                    <?php echo e($editingTxId ? ($txType === 'debt' ? __('market.edit_debt') : __('market.edit_payment')) : ($txType === 'debt' ? __('market.add_new_debt') : __('market.add_new_payment'))); ?>
+
+                </h2>
+                <button x-on:click="show = false" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+            <form wire:submit.prevent="addTransaction" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-bold mb-1.5 text-gray-700 dark:text-gray-300"><?php echo e(__('market.amount_currency')); ?> <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input wire:model="txAmount" type="number" required min="0.01" step="0.01" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pe-12 ps-4 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-3xl font-black transition-all text-gray-900 dark:text-white text-start" placeholder="0.00">
+                        <span class="absolute end-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">₪</span>
+                    </div>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['txAmount'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-1.5 text-gray-700 dark:text-gray-300"><?php echo e(__('market.notes_optional')); ?></label>
+                    <textarea wire:model="txDescription" rows="4" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-gray-900 dark:text-white resize-none" placeholder="<?php echo e(__('market.example_notes')); ?>"></textarea>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['txDescription'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <button type="submit" class="w-full text-white font-bold rounded-xl py-4 mt-4 transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 <?php echo e($txType === 'debt' ? 'bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 shadow-red-500/30 ring-red-500/50' : 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-500/30 ring-emerald-500/50'); ?> focus:ring-4 focus:outline-none overflow-hidden relative group">
+                    <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                    <span wire:loading.remove wire:target="addTransaction" class="relative"><?php echo e($editingTxId ? __('market.update') : __('market.register')); ?></span>
+                    <span wire:loading wire:target="addTransaction" class="relative"><i class="ph-bold ph-spinner animate-spin"></i> <?php echo e($editingTxId ? __('market.updating') : __('market.registering')); ?></span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<?php /**PATH C:\laragon\www\market\resources\views/livewire/website/market/market-dashboard.blade.php ENDPATH**/ ?>
