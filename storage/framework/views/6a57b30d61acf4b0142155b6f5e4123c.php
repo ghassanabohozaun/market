@@ -299,21 +299,31 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                         <?php
                             $isDebt = $tx->type === 'debt';
                         ?>
-                        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex justify-between items-center">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 <?php echo e($isDebt ? 'bg-red-50 text-red-500 dark:bg-red-900/20' : 'bg-emerald-50 text-emerald-500 dark:bg-emerald-900/20'); ?>">
-                                    <i class="ph-bold <?php echo e($isDebt ? 'ph-arrow-up-right' : 'ph-arrow-down-left'); ?> text-lg"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-sm text-gray-900 dark:text-gray-100"><?php echo e($tx->description); ?></p>
-                                    <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 font-medium flex items-center gap-1">
-                                        <i class="ph-fill ph-calendar text-xs"></i> <?php echo e($tx->created_at->format('Y-m-d')); ?> - <?php echo e($tx->created_at->format('H:i')); ?>
+                        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 <?php echo e($isDebt ? 'bg-red-50 text-red-500 dark:bg-red-900/20' : 'bg-emerald-50 text-emerald-500 dark:bg-emerald-900/20'); ?>">
+                                        <i class="ph-bold <?php echo e($isDebt ? 'ph-arrow-up-right' : 'ph-arrow-down-left'); ?> text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-sm text-gray-900 dark:text-gray-100"><?php echo e($tx->description); ?></p>
+                                        <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 font-medium flex items-center gap-1">
+                                            <i class="ph-fill ph-calendar text-xs"></i> <?php echo e($tx->created_at->format('Y-m-d')); ?> - <?php echo e($tx->created_at->format('H:i')); ?>
 
-                                    </p>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="text-left font-black shrink-0 text-lg <?php echo e($isDebt ? 'text-red-500' : 'text-emerald-500'); ?>">
+                                    <?php echo e($isDebt ? '+' : '-'); ?><?php echo e(number_format($tx->amount, 1)); ?> <span class="text-[10px] font-normal">₪</span>
                                 </div>
                             </div>
-                            <div class="text-left font-black shrink-0 text-lg <?php echo e($isDebt ? 'text-red-500' : 'text-emerald-500'); ?>">
-                                <?php echo e($isDebt ? '+' : '-'); ?><?php echo e(number_format($tx->amount, 1)); ?> <span class="text-[10px] font-normal">₪</span>
+                            <div class="flex items-center gap-2 border-t dark:border-gray-800 pt-3 mt-1">
+                                <button wire:click="editTransaction(<?php echo e($tx->id); ?>)" class="flex-1 py-1.5 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-pencil-simple"></i> تعديل
+                                </button>
+                                <button wire:click="deleteTransaction(<?php echo e($tx->id); ?>)" wire:confirm="هل أنت متأكد من حذف هذه الحركة؟" class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-trash"></i> حذف
+                                </button>
                             </div>
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -342,7 +352,7 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <i class="ph-fill <?php echo e($txType === 'debt' ? 'ph-minus-circle text-red-500' : 'ph-plus-circle text-emerald-500'); ?> text-2xl"></i>
-                    <?php echo e($txType === 'debt' ? 'إضافة دين جديد' : 'إضافة دفعة / حوالة'); ?>
+                    <?php echo e($editingTxId ? ($txType === 'debt' ? 'تعديل دين' : 'تعديل دفعة / حوالة') : ($txType === 'debt' ? 'إضافة دين جديد' : 'إضافة دفعة / حوالة')); ?>
 
                 </h2>
                 <button x-on:click="show = false" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500">
@@ -379,8 +389,8 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                 </div>
                 <button type="submit" class="w-full text-white font-bold rounded-xl py-4 mt-4 transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 <?php echo e($txType === 'debt' ? 'bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 shadow-red-500/30 ring-red-500/50' : 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-500/30 ring-emerald-500/50'); ?> focus:ring-4 focus:outline-none overflow-hidden relative group">
                     <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
-                    <span wire:loading.remove wire:target="addTransaction" class="relative"><?php echo e(__('website.register')); ?></span>
-                    <span wire:loading wire:target="addTransaction" class="relative"><i class="ph-bold ph-spinner animate-spin"></i> جاري التسجيل...</span>
+                    <span wire:loading.remove wire:target="addTransaction" class="relative"><?php echo e($editingTxId ? 'تحديث' : __('website.register')); ?></span>
+                    <span wire:loading wire:target="addTransaction" class="relative"><i class="ph-bold ph-spinner animate-spin"></i> <?php echo e($editingTxId ? 'جاري التحديث...' : 'جاري التسجيل...'); ?></span>
                 </button>
             </form>
         </div>

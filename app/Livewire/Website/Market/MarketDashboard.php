@@ -21,10 +21,11 @@ class MarketDashboard extends Component
     public $ledgerPage = 1;
     public $perPage = 15;
 
-    // New Transaction
+    // New / Edit Transaction
     public $txType = 'debt';
     public $txAmount = '';
     public $txDescription = '';
+    public $editingTxId = null;
 
     public function updatingSearch()
     {
@@ -68,8 +69,30 @@ class MarketDashboard extends Component
     public function openTxModal($type)
     {
         $this->txType = $type;
+        $this->editingTxId = null;
         $this->reset(['txAmount', 'txDescription']);
         $this->dispatch('open-modal', id: 'transactionModal');
+    }
+
+    public function editTransaction($id)
+    {
+        $tx = \App\Models\MarketTransaction::find($id);
+        if (!$tx) return;
+
+        $this->editingTxId = $tx->id;
+        $this->txType = $tx->type;
+        $this->txAmount = $tx->amount;
+        $this->txDescription = $tx->description;
+        $this->dispatch('open-modal', id: 'transactionModal');
+    }
+
+    public function deleteTransaction($id)
+    {
+        $tx = \App\Models\MarketTransaction::find($id);
+        if ($tx) {
+            $tx->delete();
+            $this->activeCustomer->refresh();
+        }
     }
 
     public function addTransaction()
@@ -82,12 +105,23 @@ class MarketDashboard extends Component
 
         if (!$this->activeCustomer) return;
 
-        \App\Models\MarketTransaction::create([
-            'market_customer_id' => $this->activeCustomer->id,
-            'type' => $this->txType,
-            'amount' => $this->txAmount,
-            'description' => $this->txDescription ?? ($this->txType === 'debt' ? 'دين' : 'دفعة'),
-        ]);
+        if ($this->editingTxId) {
+            $tx = \App\Models\MarketTransaction::find($this->editingTxId);
+            if ($tx) {
+                $tx->update([
+                    'type' => $this->txType,
+                    'amount' => $this->txAmount,
+                    'description' => $this->txDescription ?? ($this->txType === 'debt' ? 'دين' : 'دفعة'),
+                ]);
+            }
+        } else {
+            \App\Models\MarketTransaction::create([
+                'market_customer_id' => $this->activeCustomer->id,
+                'type' => $this->txType,
+                'amount' => $this->txAmount,
+                'description' => $this->txDescription ?? ($this->txType === 'debt' ? 'دين' : 'دفعة'),
+            ]);
+        }
 
         $this->activeCustomer->refresh();
 
