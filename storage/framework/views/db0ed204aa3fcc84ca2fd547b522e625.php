@@ -29,8 +29,8 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo e(asset('assets/website/style.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('assets/website/toast.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/website/style.css')); ?>?v=<?php echo e(time()); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/website/toast.css')); ?>?v=<?php echo e(time()); ?>">
     <link rel="shortcut icon" href="<?php echo setting()->favicon ? asset('uploads/settings/' . setting()->favicon) : asset('assets/dashboard/images/dokkana-logo.png'); ?>" />
     <?php echo $__env->yieldPushContent('css'); ?>
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
@@ -43,7 +43,7 @@
     <!-- Scripts -->
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
-    <script src="<?php echo e(asset('assets/website/toast.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/website/toast.js')); ?>?v=<?php echo e(time()); ?>"></script>
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
