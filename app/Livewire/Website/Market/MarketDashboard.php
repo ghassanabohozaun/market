@@ -44,14 +44,22 @@ class MarketDashboard extends Component
             'newCustomerName' => 'required|string|max:255',
             'newCustomerPhone' => 'nullable|string|max:10',
         ]);
-
-        \App\Models\MarketCustomer::create([
+        $this->activeCustomer = \App\Models\MarketCustomer::create([
             'name' => $this->newCustomerName,
             'phone' => $this->newCustomerPhone,
         ]);
 
-        $this->reset(['newCustomerName', 'newCustomerPhone']);
-        $this->dispatch('close-modal', id: 'addCustomerModal');
+        $this->newCustomerName = '';
+        $this->newCustomerPhone = '';
+        $this->showNewCustomerModal = false;
+
+        $this->dispatch('toast', [
+            'title' => 'تم بنجاح',
+            'message' => 'تمت إضافة العميل ' . $this->activeCustomer->name,
+            'type' => 'success'
+        ]);
+
+        $this->dispatch('open-modal', id: 'ledgerModal');
     }
 
     public function openLedger($customerId)
@@ -92,6 +100,11 @@ class MarketDashboard extends Component
         if ($tx) {
             $tx->delete();
             $this->activeCustomer->refresh();
+            $this->dispatch('toast', [
+                'title' => 'تم الحذف',
+                'message' => 'تم حذف الحركة بنجاح',
+                'type' => 'error'
+            ]);
         }
     }
 
@@ -113,6 +126,12 @@ class MarketDashboard extends Component
                     'amount' => $this->txAmount,
                     'description' => $this->txDescription ?? ($this->txType === 'debt' ? 'دين' : 'دفعة'),
                 ]);
+                
+                $this->dispatch('toast', [
+                    'title' => 'تم التحديث',
+                    'message' => 'تم تعديل الحركة بنجاح',
+                    'type' => 'info'
+                ]);
             }
         } else {
             \App\Models\MarketTransaction::create([
@@ -120,6 +139,12 @@ class MarketDashboard extends Component
                 'type' => $this->txType,
                 'amount' => $this->txAmount,
                 'description' => $this->txDescription ?? ($this->txType === 'debt' ? 'دين' : 'دفعة'),
+            ]);
+
+            $this->dispatch('toast', [
+                'title' => 'تم التسجيل',
+                'message' => 'تم تسجيل ' . ($this->txType === 'debt' ? 'الدين' : 'الدفعة') . ' بنجاح',
+                'type' => 'success'
             ]);
         }
 
