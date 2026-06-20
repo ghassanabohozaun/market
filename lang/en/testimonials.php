@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'testimonials' => 'Testimonials',
+    'create_new' => 'Create New Testimonial',
+    'show_all' => 'Show All Testimonials',
+    'name' => 'Name',
+    'name_ar' => 'Name (Arabic)',
+    'name_en' => 'Name (English)',
+    'title' => 'Title',
+    'title_ar' => 'Title (Arabic)',
+    'title_en' => 'Title (English)',
+    'content' => 'Review Content',
+    'content_ar' => 'Review Content (Arabic)',
+    'content_en' => 'Review Content (English)',
+    'rating' => 'Rating',
+    'image' => 'Customer Image',
+    'status' => 'Status',
+    'manage_status' => 'Manage Status',
+    'created_at' => 'Created At',
+    'edit' => 'Edit Testimonial',
+    'delete_confirmation' => 'Are you sure you want to delete this testimonial?',
+    'no_testimonials_found' => 'No testimonials found',
+    'verified_buyer' => 'Verified Buyer',
+];

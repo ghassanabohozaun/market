@@ -1,0 +1,20 @@
+<?php
+return [
+    'dashboard' => 'Dashboard Management',
+    'settings' => 'Settings Management',
+    'roles' => 'Roles Management',
+    'admins' => 'Admins Management',
+    'addresses' => 'Addresses Management',
+    'departments' => 'Departments Managment',
+    'tasks' => 'Tasks Management',
+    'sliders' => 'Sliders Management',
+    'pages' => 'Pages Management',
+    'categories' => 'Categories Management',
+    'brands' => 'Brands Management',
+    'attributes' => 'Attributes Management',
+    'tags' => 'Tags Management',
+    'contacts' => 'Contacts Management',
+    'products' => 'Products Management',
+    'testimonials' => 'Testimonials Management',
+    'orders' => 'Orders Management',
+];

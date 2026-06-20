@@ -1,0 +1,66 @@
+<?php
+return [
+    'create_new_country' => 'Create New Country',
+    'update_country' => 'Update Country',
+    'countries' => 'Countries',
+    'show_all_countries' => 'Show All Countries',
+    'download_countries_flags' => 'Download Countries Flags',
+    'users_count' => 'Users Count',
+    'status' => 'Status',
+    'manage_status' => 'Manage Status',
+
+    'country_name' => 'Country Name',
+    'country_name_ar' => 'Arabic Country Name',
+    'country_name_en' => 'English Country Name',
+
+    'country_status' => 'Country Status',
+    'phone_code' => 'Phone Code',
+    'flag_code' => 'Flag Code',
+    'flag_codes_reference' => 'Flag Codes Reference',
+
+    'enter_country_name_ar' => 'Enter Arabic Country Name',
+    'enter_country_name_en' => 'Enter English Country Name',
+    'enter_phone_code' => 'Enter Phone Code',
+    'enter_flag_code' => 'Enter Flag Code',
+    'search_for_country' => 'Search for a country...',
+    'search_placeholder' => 'Search by country name...',
+    'select_flag' => 'Select Flag',
+    'select_flag_code' => 'Select Flag Code',
+
+    'no_countries_found' => 'No Countries Found',
+    'country_restricted_deletion' => 'Cannot delete this country because it has linked governorates or orders.',
+    // governorates
+    'create_new_governorate' => 'Create New Governorate',
+    'update_governorate' => 'Update Governorate',
+    'governorates' => 'Governorates',
+    'show_all_governorates' => 'Show All Governorates',
+    'governorates_count' => 'Governorates Count',
+
+    'governorate_name' => 'Governorate Name',
+    'governorate_name_ar' => 'Arabic Governorate Name',
+    'governorate_name_en' => 'English Governorate Name',
+    'country_id' => 'Country',
+
+    'enter_governorate_name_ar' => 'Enter Arabic Governorate Name',
+    'enter_governorate_name_en' => 'Enter English Governorate Name',
+
+    'no_governorates_found' => 'No Governorates Found !',
+    'governorate_restricted_deletion' => 'Cannot delete this governorate because it has linked cities.',
+
+    // city
+    'create_new_city' => 'Create New City',
+    'update_city' => 'Update City',
+    'cities' => 'Cities',
+    'show_all_cities' => 'Show All Cities',
+    'cities_count' => 'Cities Count',
+
+    'city_name' => 'City Name',
+    'city_name_ar' => 'Arabic City Name',
+    'city_name_en' => 'English City Name',
+    'governorate_id' => ' Governorate ',
+
+    'enter_city_name_ar' => 'Enter Arabic City Name',
+    'enter_city_name_en' => 'Enter English City Name',
+    'no_cities_found' => 'No Cities Found',
+    'city_restricted_deletion' => 'Cannot delete this city because it has linked orders.',
+];

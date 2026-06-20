@@ -1,0 +1,604 @@
+/* RTL Overrides for Star Admin 2 Free */
+
+/* Sidebar positioning Mirroring */
+.rtl .sidebar {
+  border: none !important;
+}
+
+/* Mobile Off-canvas RTL - Right side for Arabic */
+@media screen and (max-width: 991px) {
+  .rtl .sidebar-offcanvas {
+    left: auto !important;
+    right: -220px !important;
+  }
+  .rtl .sidebar-offcanvas.active {
+    right: 0 !important;
+    left: auto !important;
+  }
+}
+
+/* Sidebar Nav Item Rounding RTL - Restrict to top-level only */
+.rtl .sidebar .nav > .nav-item > .nav-link {
+  border-radius: 20px 0px 0px 20px !important; /* Default mirrored radius */
+  transition: border-radius 0.25s ease-in-out, background 0.25s ease-in-out;
+}
+
+/* White background for active or expanded */
+.rtl .sidebar .nav .nav-item.active > .nav-link,
+.rtl .sidebar .nav .nav-item > .nav-link[aria-expanded="true"] {
+  background: #fff !important;
+}
+
+/* ONLY flatten the bottom corner if the item actually has a sub-menu and IS OPEN */
+.rtl .sidebar .nav .nav-item > .nav-link[aria-expanded="true"]:not(.collapsed) {
+  border-radius: 20px 0px 0px 0px !important; /* Flatten bottom to connect with sub-menu */
+}
+
+/* Force rounding back whenever it is collapsed or expanded is false - Restrict to top-level */
+.rtl .sidebar .nav > .nav-item > .nav-link.collapsed,
+.rtl .sidebar .nav > .nav-item > .nav-link[aria-expanded="false"],
+.rtl .sidebar .nav > .nav-item.active > .nav-link.collapsed {
+  border-radius: 20px 0px 0px 20px !important;
+}
+
+/* Sub-menu RTL Symmetry & Indentation Fix */
+.rtl .sidebar .nav.sub-menu {
+  padding: 0.25rem 1.25rem 0.5rem 0 !important; /* Reduced to match mystyle.css updates */
+  border-radius: 0px 0px 15px 15px !important;
+  margin-right: -7px !important; /* Visual nudge for RTL alignment (total 7px) */
+  background: #fff;
+  box-shadow: none !important;
+}
+
+.rtl .sidebar .nav.sub-menu .nav-item .nav-link {
+  border-radius: 0 !important; /* Remove pill shape from sub-menu items */
+  margin: 0 !important;
+}
+
+.rtl .sidebar .nav.sub-menu .nav-item::before {
+  right: 1.25rem !important; /* Move dot closer to the right within its container */
+  left: auto !important;
+  z-index: 10; /* Keep on top */
+  transition: transform 0.3s ease;
+}
+
+.rtl .sidebar .nav.sub-menu .nav-item:hover::before {
+  transform: translateX(-5px); /* Move with the mirrored link */
+}
+
+.rtl .sidebar .nav.sub-menu .nav-item .nav-link {
+  padding: 0.7rem 2.5rem 0.7rem 1rem !important; /* padding-right pushes text after the dot */
+}
+
+/* Icons & Titles Symmetry */
+.rtl .sidebar .nav .nav-item .nav-link .menu-icon {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+/* Sidebar Arrows Mirroring - Open (Up), Closed (Down) in RTL */
+.rtl .sidebar .nav .nav-item .menu-arrow {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    color: #bfccda !important; /* Visible gray on light background */
+}
+
+.rtl .sidebar .nav .nav-item.active .menu-arrow,
+.rtl .sidebar .nav .nav-item:hover .menu-arrow {
+    color: #1F3BB3 !important; /* Theme blue */
+}
+
+/* Match LTR Micro-Motion (on :before) */
+.rtl .sidebar .nav .nav-item .nav-link .menu-arrow:before {
+    display: inline-block;
+    transition: all 0.2s ease-in !important;
+}
+
+/* Expanded state: Point Up (180deg) via :before rotation (same as LTR) */
+.rtl .sidebar .nav .nav-item .nav-link[aria-expanded="true"] .menu-arrow:before {
+    transform: rotate(180deg) !important;
+}
+
+
+/*
+   Content layout fixes
+   We rely on flexbox flow. Sidebar is 220px.
+   Main-panel is calc(100% - 220px).
+   No extra margin needed unless sidebar is fixed/absolute.
+*/
+.rtl .main-panel {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  width: calc(100% - 220px);
+}
+
+@media (max-width: 991px) {
+  .rtl .main-panel {
+    width: 100%;
+  }
+}
+
+.rtl .content-wrapper {
+  padding: 1.5rem 3.5rem 1.5rem 2.187rem; /* Swapped from LTR: 1.5rem 2.187rem 1.5rem 3.5rem */
+}
+
+/* Specific state handling */
+.rtl.sidebar-icon-only .main-panel {
+  width: calc(100% - 70px);
+}
+
+.rtl.sidebar-hidden .main-panel {
+  width: 100%;
+}
+
+
+/* Modal btn-close fix */
+.rtl .modal-header .btn-close {
+  margin-left: initial;
+  margin-right: auto;
+  padding: 0.5rem;
+}
+
+
+/* Navbar adjustments */
+.rtl .navbar .navbar-brand-wrapper {
+  padding-left: 0;
+  padding-right: 1.5rem;
+}
+
+.rtl .navbar .navbar-menu-wrapper {
+  padding-left: 2.25rem;
+  padding-right: 1.5rem;
+}
+
+/* Icon mirroring */
+.rtl .sidebar .nav .nav-item .menu-icon {
+  margin-right: 0;
+  margin-left: 1.125rem;
+}
+
+/* Dropdown alignment */
+.rtl .navbar .navbar-nav .nav-item.dropdown .dropdown-menu {
+  left: 0 !important;
+  right: auto !important;
+}
+
+/* Search form */
+.rtl .search-form i {
+  left: auto;
+  right: 15px;
+}
+
+.rtl .search-form .form-control {
+  padding-left: 15px;
+  padding-right: 45px;
+}
+
+/* Input group fixes for RTL */
+.rtl .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-left: 0;
+  margin-right: -1px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.rtl .input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.rtl .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  border-top-right-radius: initial;
+  border-bottom-right-radius: initial;
+}
+
+
+/* Scrollbar adjustment for RTL */
+.rtl .ps__rail-y {
+  left: 0 !important;
+  right: auto !important;
+}
+
+/* Carousel RTL Fixes */
+.rtl .carousel-control-prev-icon,
+.rtl .carousel-control-next-icon {
+  transform: rotate(180deg);
+  background-position: center;
+}
+
+.rtl .carousel-control-prev {
+  left: auto;
+  right: 0;
+}
+
+.rtl .carousel-control-next {
+  right: auto;
+  left: 0;
+}
+
+.rtl .carousel-item {
+  margin-right: 0;
+  margin-left: 0;
+  float: right;
+  margin-left: -100%;
+}
+
+/* RTL Carousel Animation Fix */
+.rtl .carousel-item-next:not(.carousel-item-start),
+.rtl .active.carousel-item-end {
+  transform: translateX(-100%);
+}
+
+.rtl .carousel-item-prev:not(.carousel-item-end),
+.rtl .active.carousel-item-start {
+  transform: translateX(100%);
+}
+
+/* Dashboard Carousel Fixes (Performance & Detailed Report) */
+.rtl .performance-overview-carousel .carousel-control-prev,
+.rtl .detailed-report-carousel .carousel-control-prev {
+  left: 4rem;
+  right: auto;
+}
+
+.rtl .performance-overview-carousel .carousel-control-next,
+.rtl .detailed-report-carousel .carousel-control-next {
+  left: 1.681rem;
+  right: auto;
+}
+
+.rtl .performance-overview-carousel .carousel-control-prev:after,
+.rtl .detailed-report-carousel .carousel-control-prev:after,
+.rtl .performance-overview-carousel .carousel-control-next:after,
+.rtl .detailed-report-carousel .carousel-control-next:after {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
+/* Summernote RTL Overrides */
+/* Summernote RTL Overrides */
+/* Editor content RTL */
+.rtl .note-editor .note-editable {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Fix Placeholder */
+.rtl .note-placeholder {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Toolbar: Keep LTR for button mechanics, but align groups to the right */
+.rtl .note-toolbar {
+  direction: ltr;
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: flex-end; /* Aligns LTR buttons to the right side */
+  padding: 0 5px;
+}
+
+/* Button groups spacing */
+.rtl .note-btn-group {
+  margin-left: 5px;
+  margin-right: 0;
+}
+
+/* Fix Dropdown Menus in RTL */
+.rtl .note-editor .dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
+  text-align: right;
+  min-width: 150px;
+}
+
+/* Fix Color Palette */
+.rtl .note-color-palette {
+  text-align: center;
+}
+
+/* Ensure tooltips/popovers don't look weird (optional) */
+.rtl .note-popover {
+  direction: ltr; /* specific popovers often need LTR to position calculated offsets correctly */
+}
+
+
+/* ========================
+   Quill Editor RTL Fixes
+   ======================== */
+
+/* Toolbar Container */
+.rtl .ql-toolbar.ql-snow {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Button Groups */
+.rtl .ql-snow .ql-formats {
+  float: right;
+  margin-left: 15px;
+  margin-right: 0;
+}
+
+/* Dropdowns/Pickers */
+.rtl .ql-snow .ql-picker {
+  float: right;
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+/* Picker Label Text */
+.rtl .ql-snow .ql-picker-label {
+  padding-right: 8px;
+  padding-left: 2px;
+  text-align: right;
+}
+
+/* Picker Arrow Icon */
+.rtl .ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+  left: 0;
+  right: auto;
+}
+
+/* Picker Dropdown Menu */
+.rtl .ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  left: auto;
+  right: 0;
+  text-align: right;
+}
+
+/* Color Picker & Icon Picker specific fixes */
+.rtl .ql-snow .ql-color-picker .ql-picker-label svg,
+.rtl .ql-snow .ql-icon-picker .ql-picker-label svg {
+  left: 4px;
+  right: auto;
+}
+
+/* Editor Content Area */
+.rtl .ql-editor {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Placeholder Text */
+.rtl .ql-editor.ql-blank::before {
+  right: 15px;
+  left: auto;
+  text-align: right;
+}
+
+/* List Item Alignment */
+.rtl .ql-editor ul > li,
+.rtl .ql-editor ol > li {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl .ql-editor li:not(.ql-direction-rtl)::before {
+  margin-left: 0.3em;
+  margin-right: -1.5em; /* Pull bullet/number back to right */
+  text-align: left;
+}
+
+
+/* ========================
+   SimpleMDE RTL Fixes
+   ======================== */
+
+.rtl .CodeMirror {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Toolbar Buttons */
+.rtl .editor-toolbar {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .editor-toolbar a {
+  float: right;
+}
+
+.rtl .editor-toolbar a.fa-header-x:after {
+  bottom: -4px; /* Fix header icon alignment if needed */
+}
+
+.rtl .editor-toolbar:before, .rtl .editor-toolbar:after {
+  display: block;
+  content: ' ';
+  height: 1px;
+}
+
+.rtl .editor-toolbar:after {
+  clear: both;
+}
+
+/* Vertical Separator */
+.rtl .editor-toolbar i.separator {
+  border-right: none;
+  border-left: 1px solid #d9d9d9;
+  margin: 0 6px;
+  float: right;
+}
+
+/* Status Bar */
+.rtl .editor-statusbar {
+  text-align: left; /* Keep status (lines/words) on left or flip? Usually status bars are LTR or mirrored. Let's mirror */
+  text-align: left; /* flipped from right */
+}
+
+.rtl .editor-statusbar span.autosave {
+  float: right; /* flipped from left */
+}
+
+.rtl .editor-statusbar .lines:before {
+  content: ' '; /* Remove the default separator logic if needed, or adjust */
+}
+
+/* Preview Mode */
+.rtl .editor-preview, .rtl .editor-preview-side {
+  direction: rtl;
+  text-align: right;
+}
+/* Pagination RTL Fixes to match Star Admin Theme */
+.rtl .pagination .page-item.active .page-link {
+  background-color: #1F3BB3 !important;
+  border-color: #1F3BB3 !important;
+}
+
+.rtl .pagination .page-link {
+  color: #1F3BB3;
+}
+
+.rtl #paginationInfo {
+  text-align: right;
+}
+
+/* Breadcrumb RTL Fix */
+.rtl .breadcrumb-item + .breadcrumb-item {
+  padding-left: 0;
+  padding-right: 0.5rem;
+}
+
+.rtl .breadcrumb-item + .breadcrumb-item::before {
+  float: right;
+  padding-right: 0;
+  padding-left: 0.5rem;
+}
+
+/* Navbar Dropdown Toggle RTL Fix */
+.rtl .navbar .navbar-menu-wrapper .navbar-nav .nav-item .dropdown-bordered.dropdown-toggle:after {
+  right: auto;
+  left: 15px;
+  top: 35%;
+}
+
+/* RTL Mobile Logo and Responsive Fix */
+@media (max-width: 991px) {
+  .rtl .navbar .navbar-brand-wrapper {
+    display: flex !important;
+    width: 55px !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    position: relative !important;
+  }
+
+  .rtl .navbar .navbar-menu-wrapper {
+    width: calc(100% - 55px) !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  .rtl .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini {
+    display: inline-block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .rtl .navbar .navbar-brand-wrapper .brand-logo-mini img {
+     width: 35px !important;
+     height: auto !important;
+  }
+
+  .rtl .navbar .navbar-brand-wrapper .me-3 {
+    display: none !important;
+  }
+
+  .rtl .navbar .navbar-menu-wrapper .navbar-nav {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+}
+
+/* ============================================================
+   RTL Fix: Bootstrap form-switch direction
+   Bootstrap uses padding-left/margin-left for the toggle
+   which do not auto-flip in RTL, so we override them here.
+   ============================================================ */
+.rtl .form-switch {
+    padding-left: 0 !important;
+    padding-right: 2.5em !important;
+}
+
+.rtl .form-switch .form-check-input {
+    margin-left: 0 !important;
+    margin-right: -2.5em !important;
+    /* Flip the background-position: when unchecked it's at right, when checked at left */
+    background-position: right center !important;
+}
+
+.rtl .form-switch .form-check-input:checked {
+    background-position: left center !important;
+}
+
+/* Arabic (RTL): Buttons font size -1px */
+.rtl .btn {
+    font-size: calc(var(--dash-font-base) - 0.0625rem) !important; /* 13px → 12px */
+}
+.rtl .btn-sm {
+    font-size: calc(0.875rem - 0.0625rem) !important; /* ~13px → 12px */
+}
+
+/* Button icon alignment — all languages */
+.btn i,
+.btn [class^="mdi-"],
+.btn [class^="ti-"],
+.btn [class^="icon-"],
+.btn .fa {
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    position: relative;
+    top: -1px;
+}
+
+
+/* RTL Mirror for Sidebar Hover Animation - Restrict to top-level items */
+.rtl .sidebar .nav > .nav-item:hover > .nav-link {
+    transform: translateX(-5px) !important;
+}
+
+/* Ensure sub-menu items don't slide out of their container */
+.rtl .sidebar .nav.sub-menu .nav-item:hover .nav-link {
+    transform: none !important;
+    background: rgba(31, 59, 179, 0.08) !important;
+}
+
+/* RTL Active Indicator - Targeted */
+.rtl .sidebar .nav .nav-item.active > .nav-link::before,
+.rtl .sidebar .nav .nav-item .nav-link.active::before {
+    left: auto !important;
+    right: 0 !important;
+    border-radius: 4px 0 0 4px !important;
+}
+
+/* Fallback: Flatten bottom corner if sub-menu contains active items */
+.rtl .sidebar .nav .nav-item:has(.sub-menu .nav-link.active) > .nav-link {
+  border-radius: 20px 0px 0px 0px !important;
+}
+
+/* ============================================================
+   RTL Hover Bridge & Indentation for Collapsed Sidebar
+   ============================================================ */
+.rtl.sidebar-icon-only .sidebar .nav .nav-item.hover-open .collapse,
+.rtl.sidebar-icon-only .sidebar .nav .nav-item.hover-open .collapsing {
+    right: 70px !important; /* Explicitly anchor to sidebar width */
+    left: auto !important;
+}
+
+.rtl.sidebar-icon-only .sidebar .nav .nav-item.hover-open .collapse::before,
+.rtl.sidebar-icon-only .sidebar .nav .nav-item.hover-open .collapsing::before {
+    left: auto !important;
+    right: -20px !important; /* Mirror bridge for RTL */
+    width: 70px;
+}
+
+.rtl.sidebar-icon-only .sidebar .nav.sub-menu .nav-item .nav-link {
+    text-align: right !important;
+    padding-right: 25px !important;
+    padding-left: 10px !important;
+}
+
+

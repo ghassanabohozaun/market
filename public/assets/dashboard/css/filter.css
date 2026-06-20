@@ -1,0 +1,154 @@
+.query-bar-container {
+    position: relative;
+    /* Lowered to 9 to prevent overlapping the site header (1030), alerts, and modals (1055) */
+    z-index: 9;
+}
+
+.query-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping for flexibility */
+    gap: 12px;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    white-space: normal; /* Remove nowrap for responsiveness */
+    overflow: visible;
+}
+
+.query-bar form {
+    display: flex;
+    flex-wrap: wrap; /* Allow chips to wrap elegantly */
+    align-items: center;
+    gap: 8px;
+    flex: 1; /* Take up available space */
+}
+
+@media (max-width: 991px) {
+    .query-bar {
+        gap: 10px;
+    }
+    .query-bar form {
+        gap: 10px 8px !important; /* Forces vertical gap when wrapping */
+    }
+    .query-bar-label {
+        width: 100%; /* Label takes full width on mobile for better stacking */
+        margin-bottom: 5px;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 991px) {
+    .filter-chip {
+        position: static !important; /* Popover will now position relative to .query-bar-container */
+    }
+
+    .filter-popover {
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 auto !important;
+        width: 95% !important;
+        max-width: 400px !important;
+        top: 100% !important;
+        transform: none !important;
+        z-index: 1000 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-chip {
+        padding: 4px 10px;
+        font-size: 12px;
+        gap: 5px;
+    }
+
+    .filter-chip i {
+        font-size: 14px;
+    }
+}
+
+.filter-chip {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 50px;
+    padding: 8px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    position: relative;
+    color: #444;
+    font-size: 14px;
+    user-select: none;
+}
+
+.filter-chip:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+}
+
+.filter-chip.active {
+    background: #eef2ff;
+    border-color: #4b49ac;
+    color: #4b49ac;
+    font-weight: 600;
+}
+
+.filter-chip.active i {
+    color: #4b49ac;
+}
+
+.filter-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    z-index: 99;
+    min-width: 320px;
+    display: none;
+    cursor: auto;
+}
+
+/* RTL Support: Align to right of chip and grow left */
+[dir="rtl"] .filter-popover {
+    left: auto !important;
+    right: 0 !important;
+}
+
+/* Fallback: if chip is too close to left edge (especially in RTL),
+   we might need JS or a class to flip alignment.
+   For now, we just ensure it doesn't have transform: translateX(-50%) on desktop. */
+
+.filter-popover .form-group {
+    margin-bottom: 15px;
+}
+
+.filter-popover .popover-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.query-bar-label {
+    font-weight: 600;
+    margin-left: 10px;
+    color: #1f3bb3;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.reset-chip {
+    color: #dc3545;
+    border-color: #f5c2c7;
+}
+
+.reset-chip:hover {
+    background: #f8d7da;
+}

@@ -1,0 +1,67 @@
+/* tajawal-regular - arabic_latin */
+@font-face {
+font-display: swap;
+font-family: 'Tajawal';
+font-style: normal;
+font-weight: 400;
+src: url('../../fonts/tajawal/tajawal-v12-arabic_latin-regular.woff2') format('woff2'),
+url('../../fonts/tajawal/tajawal-v12-arabic_latin-regular.woff') format('woff');
+}
+
+/* tajawal-700 - arabic_latin */
+@font-face {
+font-display: swap;
+font-family: 'Tajawal';
+font-style: normal;
+font-weight: 700;
+src: url('../../fonts/tajawal/tajawal-v12-arabic_latin-700.woff2') format('woff2'),
+url('../../fonts/tajawal/tajawal-v12-arabic_latin-700.woff') format('woff');
+}
+
+/* English (LTR): Tajawal font */
+body, h1, h2, h3, h4, h5, h6,
+.form-control, .btn, .nav-link,
+.breadcrumb-item, .welcome-text,
+.welcome-sub-text, .menu-title {
+    font-family: 'Tajawal', sans-serif !important;
+}
+
+/* Arabic (RTL): Cairo font for EVERYTHING - ensures no element escapes the theme */
+html[lang="ar"],
+html[lang="ar"] body,
+html[lang="ar"] .form-control,
+html[lang="ar"] .form-select,
+html[lang="ar"] .btn,
+html[lang="ar"] .nav-link,
+html[lang="ar"] .menu-title,
+html[lang="ar"] label,
+html[lang="ar"] .form-label,
+html[lang="ar"] .modal-title,
+html[lang="ar"] .card-title,
+html[lang="ar"] .dropdown-item,
+html[lang="ar"] td,
+html[lang="ar"] th,
+html[lang="ar"] input,
+html[lang="ar"] select,
+html[lang="ar"] textarea,
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] h6 {
+    font-family: 'Tajawal', sans-serif !important;
+}
+
+/* Radical approach: Apply to all children except known icon classes */
+html[lang="ar"] *:not([class^="mdi-"]):not([class^="ti-"]):not([class^="icon-"]):not([class^="fa-"]):not(.mdi):not(.ti):not(.fa):not(.feather):not([class*="icon"]) {
+    font-family: 'Tajawal', sans-serif !important;
+}
+
+html {
+    font-size: 110% !important;
+}
+
+body {
+    font-size: 1rem !important;
+}
