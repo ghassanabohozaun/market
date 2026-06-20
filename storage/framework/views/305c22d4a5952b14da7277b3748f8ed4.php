@@ -1,4 +1,6 @@
-<?php $__env->startSection('title', __('website.store_notebook')); ?>
+
+
+<?php $__env->startSection('title', __('market.store_notebook')); ?>
 
 <?php $__env->startSection('content'); ?>
     <?php
@@ -22,4 +24,5 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.website.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\market\resources\views/website/market.blade.php ENDPATH**/ ?>
