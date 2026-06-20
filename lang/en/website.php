@@ -32,4 +32,13 @@ return [
     'home' => 'Home',
     'coming_soon' => 'Coming Soon...',
     'go_to_market' => 'Go to Market',
+    'success' => 'Success',
+    'customer_added' => 'Customer added ',
+    'deleted' => 'Deleted',
+    'transaction_deleted' => 'Transaction deleted successfully',
+    'updated' => 'Updated',
+    'transaction_updated' => 'Transaction updated successfully',
+    'registered' => 'Registered',
+    'debt_registered' => 'Debt registered successfully',
+    'payment_registered' => 'Payment registered successfully',
 ];

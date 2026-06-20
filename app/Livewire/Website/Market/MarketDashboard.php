@@ -54,8 +54,8 @@ class MarketDashboard extends Component
         $this->showNewCustomerModal = false;
 
         $this->dispatch('toast', [
-            'title' => 'تم بنجاح',
-            'message' => 'تمت إضافة العميل ' . $this->activeCustomer->name,
+            'title' => __('website.success'),
+            'message' => __('website.customer_added') . $this->activeCustomer->name,
             'type' => 'success'
         ]);
 
@@ -101,8 +101,8 @@ class MarketDashboard extends Component
             $tx->delete();
             $this->activeCustomer->refresh();
             $this->dispatch('toast', [
-                'title' => 'تم الحذف',
-                'message' => 'تم حذف الحركة بنجاح',
+                'title' => __('website.deleted'),
+                'message' => __('website.transaction_deleted'),
                 'type' => 'error'
             ]);
         }
@@ -128,8 +128,8 @@ class MarketDashboard extends Component
                 ]);
                 
                 $this->dispatch('toast', [
-                    'title' => 'تم التحديث',
-                    'message' => 'تم تعديل الحركة بنجاح',
+                    'title' => __('website.updated'),
+                    'message' => __('website.transaction_updated'),
                     'type' => 'info'
                 ]);
             }
@@ -142,8 +142,8 @@ class MarketDashboard extends Component
             ]);
 
             $this->dispatch('toast', [
-                'title' => 'تم التسجيل',
-                'message' => 'تم تسجيل ' . ($this->txType === 'debt' ? 'الدين' : 'الدفعة') . ' بنجاح',
+                'title' => __('website.registered'),
+                'message' => $this->txType === 'debt' ? __('website.debt_registered') : __('website.payment_registered'),
                 'type' => 'success'
             ]);
         }

@@ -32,4 +32,13 @@ return [
     'home' => 'الصفحة الرئيسية',
     'coming_soon' => 'قريباً...',
     'go_to_market' => 'الذهاب إلى الدكانة (Market)',
+    'success' => 'تم بنجاح',
+    'customer_added' => 'تمت إضافة العميل ',
+    'deleted' => 'تم الحذف',
+    'transaction_deleted' => 'تم حذف الحركة بنجاح',
+    'updated' => 'تم التحديث',
+    'transaction_updated' => 'تم تعديل الحركة بنجاح',
+    'registered' => 'تم التسجيل',
+    'debt_registered' => 'تم تسجيل الدين بنجاح',
+    'payment_registered' => 'تم تسجيل الدفعة بنجاح',
 ];
