@@ -122,7 +122,7 @@
                     // Safe string to index hashing (prevents negative modulo & int overflow)
                     $hashIndex = hexdec(substr(md5($customer->name), 0, 6)) % count($avatarColors);
                     $colorClass = $avatarColors[$hashIndex];
-                    $lastTx = $customer->transactions->first() ? $customer->transactions->first()->created_at->format('Y-m-d') : 'لا يوجد حركات';
+                    $lastTx = $customer->transactions->first() ? $customer->transactions->first()->created_at->format('Y-m-d') : __('market.no_transactions');
                     $balance = $customer->balance;
                     $isDebt = $balance > 0;
                 @endphp
@@ -143,7 +143,7 @@
                             {{ number_format(abs($balance), 1) }}
                         </span>
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 {{ $isDebt ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : ($balance < 0 ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400') }}">
-                            {{ $isDebt ? 'عليه دين' : ($balance < 0 ? 'له رصيد' : 'خالص') }}
+                            {{ $isDebt ? __('market.owes_debt') : ($balance < 0 ? __('market.has_credit') : __('market.paid')) }}
                         </span>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                 </div>
                 <button type="submit" class="w-full bg-primary text-white font-bold rounded-xl py-3.5 mt-4 hover:bg-emerald-600 transition-colors active:scale-[0.98] shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
                     <span wire:loading.remove wire:target="addCustomer">{{ __('market.save_customer_data') }}</span>
-                    <span wire:loading wire:target="addCustomer"><i class="ph-bold ph-spinner animate-spin"></i> جاري الحفظ...</span>
+                    <span wire:loading wire:target="addCustomer"><i class="ph-bold ph-spinner animate-spin"></i> {{ __('market.saving') }}</span>
                 </button>
             </form>
         </div>
@@ -238,7 +238,7 @@
                         </h3>
                     </div>
                     <div class="text-xs font-bold px-3 py-1.5 rounded-full {{ $activeCustomer->balance > 0 ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : ($activeCustomer->balance < 0 ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400') }}">
-                        {{ $activeCustomer->balance > 0 ? 'عليه دين' : ($activeCustomer->balance < 0 ? 'له رصيد' : 'خالص') }}
+                        {{ $activeCustomer->balance > 0 ? __('market.owes_debt') : ($activeCustomer->balance < 0 ? __('market.has_credit') : __('market.paid')) }}
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
@@ -266,7 +266,7 @@
                 @if(count($ledgerTransactions) === 0)
                 <div class="flex flex-col items-center justify-center py-16 text-gray-400">
                     <i class="ph-fill ph-receipt text-5xl mb-3 text-gray-300 dark:text-gray-600 opacity-50"></i>
-                    <p class="text-sm font-bold">لا يوجد حركات مسجلة</p>
+                    <p class="text-sm font-bold">{{ __('market.no_registered_transactions') }}</p>
                 </div>
                 @else
                     @foreach($ledgerTransactions as $tx)
@@ -292,10 +292,10 @@
                             </div>
                             <div class="flex items-center gap-2 border-t dark:border-gray-800 pt-3 mt-1">
                                 <button wire:click="editTransaction({{ $tx->id }})" class="flex-1 py-1.5 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
-                                    <i class="ph-bold ph-pencil-simple"></i> تعديل
+                                    <i class="ph-bold ph-pencil-simple"></i> {{ __('market.edit') }}
                                 </button>
-                                <button wire:click="deleteTransaction({{ $tx->id }})" wire:confirm="هل أنت متأكد من حذف هذه الحركة؟" class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
-                                    <i class="ph-bold ph-trash"></i> حذف
+                                <button wire:click="deleteTransaction({{ $tx->id }})" wire:confirm="{{ __('market.confirm_delete_transaction') }}" class="flex-1 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-trash"></i> {{ __('market.delete') }}
                                 </button>
                             </div>
                         </div>
@@ -303,7 +303,7 @@
 
                     @if($totalLedgerTransactions > count($ledgerTransactions))
                     <button wire:click="loadMoreLedger" class="w-full py-4 mt-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center justify-center gap-1 border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
-                        عرض حركات أقدم <i class="ph-bold ph-caret-down"></i>
+                        {{ __('market.show_older_transactions') }} <i class="ph-bold ph-caret-down"></i>
                     </button>
                     @endif
                 @endif
@@ -325,7 +325,7 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <i class="ph-fill {{ $txType === 'debt' ? 'ph-minus-circle text-red-500' : 'ph-plus-circle text-emerald-500' }} text-2xl"></i>
-                    {{ $editingTxId ? ($txType === 'debt' ? 'تعديل دين' : 'تعديل دفعة / حوالة') : ($txType === 'debt' ? 'إضافة دين جديد' : 'إضافة دفعة / حوالة') }}
+                    {{ $editingTxId ? ($txType === 'debt' ? __('market.edit_debt') : __('market.edit_payment')) : ($txType === 'debt' ? __('market.add_new_debt') : __('market.add_new_payment')) }}
                 </h2>
                 <button x-on:click="show = false" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500">
                     <i class="ph-bold ph-x"></i>
@@ -347,8 +347,8 @@
                 </div>
                 <button type="submit" class="w-full text-white font-bold rounded-xl py-4 mt-4 transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 {{ $txType === 'debt' ? 'bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 shadow-red-500/30 ring-red-500/50' : 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-500/30 ring-emerald-500/50' }} focus:ring-4 focus:outline-none overflow-hidden relative group">
                     <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
-                    <span wire:loading.remove wire:target="addTransaction" class="relative">{{ $editingTxId ? 'تحديث' : __('market.register') }}</span>
-                    <span wire:loading wire:target="addTransaction" class="relative"><i class="ph-bold ph-spinner animate-spin"></i> {{ $editingTxId ? 'جاري التحديث...' : 'جاري التسجيل...' }}</span>
+                    <span wire:loading.remove wire:target="addTransaction" class="relative">{{ $editingTxId ? __('market.update') : __('market.register') }}</span>
+                    <span wire:loading wire:target="addTransaction" class="relative"><i class="ph-bold ph-spinner animate-spin"></i> {{ $editingTxId ? __('market.updating') : __('market.registering') }}</span>
                 </button>
             </form>
         </div>

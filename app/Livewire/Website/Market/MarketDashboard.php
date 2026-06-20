@@ -124,7 +124,7 @@ class MarketDashboard extends Component
                 $tx->update([
                     'type' => $this->txType,
                     'amount' => $this->txAmount,
-                    'description' => $this->txDescription ?? ($this->txType === 'debt' ? 'دين' : 'دفعة'),
+                    'description' => $this->txDescription ?? ($this->txType === 'debt' ? __('market.debt') : __('market.payment')),
                 ]);
                 
                 $this->dispatch('toast', [
@@ -138,7 +138,7 @@ class MarketDashboard extends Component
                 'market_customer_id' => $this->activeCustomer->id,
                 'type' => $this->txType,
                 'amount' => $this->txAmount,
-                'description' => $this->txDescription ?? ($this->txType === 'debt' ? 'دين' : 'دفعة'),
+                'description' => $this->txDescription ?? ($this->txType === 'debt' ? __('market.debt') : __('market.payment')),
             ]);
 
             $this->dispatch('toast', [
