@@ -149,6 +149,12 @@ Route::group(
                 Route::post('/testimonials/status', [App\Http\Controllers\Dashboard\TestimonialsController::class, 'changeStatus'])->name('testimonials.change.status');
             });
 
+            ########################################### market customers routes  ##############################################################
+            Route::group(['as' => 'market.', 'prefix' => 'market', 'middleware' => 'can:market'], function () {
+                Route::resource('customers', \App\Http\Controllers\Dashboard\MarketCustomersController::class)->except(['show']);
+                Route::post('/customers/destroy', [\App\Http\Controllers\Dashboard\MarketCustomersController::class, 'destroy'])->name('customers.destroy');
+            });
+
 
         });
     },

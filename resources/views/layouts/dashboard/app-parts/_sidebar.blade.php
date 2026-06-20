@@ -142,5 +142,25 @@
             </li>
         @endcan
 
+        @can('market')
+            <li class="nav-item {{ request()->routeIs('dashboard.market.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#market-menu"
+                    aria-expanded="{{ request()->routeIs('dashboard.market.*') ? 'true' : 'false' }}"
+                    aria-controls="market-menu">
+                    <i class="menu-icon mdi mdi-store"></i>
+                    <span class="menu-title">{!! __('market.store_notebook') !!}</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('dashboard.market.*') ? 'show' : '' }}" id="market-menu">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('dashboard.market.customers.index') ? 'active' : '' }}"
+                                href="{{ route('dashboard.market.customers.index') }}">{!! __('market.customers') !!}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @endcan
+
     </ul>
 </nav>

@@ -17,4 +17,5 @@ return [
     'products' => 'Products Management',
     'testimonials' => 'Testimonials Management',
     'orders' => 'Orders Management',
+    'market' => 'Market Management',
 ];

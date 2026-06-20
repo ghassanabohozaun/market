@@ -61,4 +61,14 @@ return [
     'yes_delete' => 'نعم، احذف',
     'cancel' => 'إلغاء',
     'warning' => 'تحذير',
+
+    // Dashboard Market Customers
+    'customers' => 'العملاء',
+    'customer' => 'العميل',
+    'create_new_customer' => 'إضافة عميل جديد',
+    'update_customer' => 'تعديل بيانات العميل',
+    'show_all_customers' => 'عرض جميع العملاء',
+    'phone' => 'رقم الهاتف',
+    'balance' => 'الرصيد',
+    'total_transactions' => 'عدد الحركات',
 ];

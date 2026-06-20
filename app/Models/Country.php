@@ -36,15 +36,6 @@ class Country extends Model
             throw new \App\Exceptions\DeleteRestrictionException(__('addresses.country_restricted_deletion'));
         }
 
-        // 2. Check if has orders
-        $names = array_values($this->getTranslations('name') ?: []);
-        if (!empty($names)) {
-            $hasOrders = \App\Models\Order::whereIn('country', $names)->exists();
-            if ($hasOrders) {
-                throw new \App\Exceptions\DeleteRestrictionException(__('addresses.country_restricted_deletion'));
-            }
-        }
-
         return true;
     }
     //scopes

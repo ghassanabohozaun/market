@@ -61,4 +61,14 @@ return [
     'yes_delete' => 'Yes, delete it',
     'cancel' => 'Cancel',
     'warning' => 'Warning',
+
+    // Dashboard Market Customers
+    'customers' => 'Customers',
+    'customer' => 'Customer',
+    'create_new_customer' => 'Add New Customer',
+    'update_customer' => 'Update Customer Data',
+    'show_all_customers' => 'Show All Customers',
+    'phone' => 'Phone Number',
+    'balance' => 'Balance',
+    'total_transactions' => 'Total Transactions',
 ];
