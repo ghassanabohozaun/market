@@ -1,6 +1,6 @@
 @extends('layouts.website.app')
 
-@section('title', __('website.store_notebook'))
+@section('title', __('market.store_notebook'))
 
 @section('content')
     <livewire:website.market.market-dashboard />

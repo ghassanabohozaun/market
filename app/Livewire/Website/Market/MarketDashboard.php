@@ -54,8 +54,8 @@ class MarketDashboard extends Component
         $this->showNewCustomerModal = false;
 
         $this->dispatch('toast', [
-            'title' => __('website.success'),
-            'message' => __('website.customer_added') . $this->activeCustomer->name,
+            'title' => __('market.success'),
+            'message' => __('market.customer_added') . $this->activeCustomer->name,
             'type' => 'success'
         ]);
 
@@ -101,8 +101,8 @@ class MarketDashboard extends Component
             $tx->delete();
             $this->activeCustomer->refresh();
             $this->dispatch('toast', [
-                'title' => __('website.deleted'),
-                'message' => __('website.transaction_deleted'),
+                'title' => __('market.deleted'),
+                'message' => __('market.transaction_deleted'),
                 'type' => 'error'
             ]);
         }
@@ -128,8 +128,8 @@ class MarketDashboard extends Component
                 ]);
                 
                 $this->dispatch('toast', [
-                    'title' => __('website.updated'),
-                    'message' => __('website.transaction_updated'),
+                    'title' => __('market.updated'),
+                    'message' => __('market.transaction_updated'),
                     'type' => 'info'
                 ]);
             }
@@ -142,8 +142,8 @@ class MarketDashboard extends Component
             ]);
 
             $this->dispatch('toast', [
-                'title' => __('website.registered'),
-                'message' => $this->txType === 'debt' ? __('website.debt_registered') : __('website.payment_registered'),
+                'title' => __('market.registered'),
+                'message' => $this->txType === 'debt' ? __('market.debt_registered') : __('market.payment_registered'),
                 'type' => 'success'
             ]);
         }
