@@ -29,8 +29,8 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/website/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/website/toast.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/website/style.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('assets/website/toast.css') }}?v={{ time() }}">
     <link rel="shortcut icon" href="{!! setting()->favicon ? asset('uploads/settings/' . setting()->favicon) : asset('assets/dashboard/images/dokkana-logo.png') !!}" />
     @stack('css')
     @livewireStyles
@@ -41,7 +41,7 @@
 
     <!-- Scripts -->
     @livewireScripts
-    <script src="{{ asset('assets/website/toast.js') }}"></script>
+    <script src="{{ asset('assets/website/toast.js') }}?v={{ time() }}"></script>
     @stack('scripts')
 </body>
 </html>
