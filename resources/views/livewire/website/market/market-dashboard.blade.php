@@ -339,7 +339,8 @@
                                             popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b]',
                                             title: 'text-lg font-black text-gray-800 dark:text-gray-100',
                                             htmlContainer: 'text-sm font-medium text-gray-500 dark:text-gray-400 mt-2',
-                                            actions: 'gap-3 mt-6 flex w-full px-6 pb-2',
+                                            icon: 'scale-75 my-0',
+                                            actions: 'gap-3 mt-4 flex w-full px-6 pb-2',
                                             confirmButton: 'flex-1 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 font-bold rounded-xl px-4 py-3 transition-colors',
                                             cancelButton: 'flex-1 bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 font-bold rounded-xl px-4 py-3 transition-colors'
                                         },
