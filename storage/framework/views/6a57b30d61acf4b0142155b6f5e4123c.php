@@ -29,32 +29,50 @@
     <!-- Dashboard Metrics -->
     <div class="p-4">
         <div class="grid grid-cols-2 gap-3 mb-2">
-            <div class="col-span-2 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-3xl p-6 text-white shadow-lg shadow-emerald-500/30 relative overflow-hidden transition-transform duration-300 hover:scale-[1.01]">
-                <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-                <div class="absolute top-0 right-0 p-4 opacity-20 pointer-events-none">
-                    <i class="ph-fill ph-wallet text-8xl -mt-4 -mr-4"></i>
+            <!-- Total Debt Card -->
+            <div class="col-span-2 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-[1.5rem] p-6 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden transition-all duration-300 hover:shadow-emerald-500/40 border border-emerald-400/20">
+                <!-- Decorative Elements -->
+                <div class="absolute -end-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -start-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                <div class="absolute top-0 end-0 p-4 opacity-10 pointer-events-none transform rtl:-scale-x-100">
+                    <i class="ph-fill ph-wallet text-8xl -mt-4 -me-4 -rotate-12"></i>
                 </div>
-                <p class="text-sm opacity-90 mb-1 font-medium"><?php echo e(__('market.total_market_debts')); ?></p>
-                <h2 class="text-4xl font-black tracking-tight"><span><?php echo e(number_format($totalDebt, 1)); ?></span> <span class="text-lg font-normal opacity-80"><?php echo e(__('market.currency')); ?></span></h2>
+                
+                <!-- Content -->
+                <div class="relative z-10 flex flex-col items-start">
+                    <div class="flex items-center gap-2 mb-2 opacity-90 bg-black/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10">
+                        <i class="ph-fill ph-coins text-white"></i>
+                        <p class="text-sm font-bold"><?php echo e(__('market.total_market_debts')); ?></p>
+                    </div>
+                    <div class="flex items-baseline gap-2 mt-1">
+                        <h2 class="text-4xl font-black tracking-tight drop-shadow-sm" dir="ltr"><?php echo e(number_format($totalDebt, 1)); ?></h2>
+                        <span class="text-lg font-bold opacity-80"><?php echo e(__('market.currency')); ?></span>
+                    </div>
+                </div>
             </div>
             
-            <div class="bg-white dark:bg-darkCard rounded-[1.25rem] p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-3 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center shrink-0">
+            <!-- Customers Card -->
+            <div class="bg-white dark:bg-darkCard rounded-[1.25rem] p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-3 transition-colors hover:border-primary/30">
+                <div class="w-11 h-11 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center shrink-0 shadow-sm border border-blue-100 dark:border-blue-900/50">
                     <i class="ph-fill ph-users text-xl"></i>
                 </div>
-                <div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap"><?php echo e(__('market.active_customers')); ?></p>
-                    <h4 class="text-lg font-black text-gray-800 dark:text-gray-100 leading-tight"><?php echo e($totalCustomers); ?></h4>
+                <div class="flex flex-col items-start">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-bold whitespace-nowrap"><?php echo e(__('market.active_customers')); ?></p>
+                    <h4 class="text-xl font-black text-gray-800 dark:text-gray-100 leading-tight mt-0.5" dir="ltr"><?php echo e($totalCustomers); ?></h4>
                 </div>
             </div>
             
-            <div class="bg-white dark:bg-darkCard rounded-[1.25rem] p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-3 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center shrink-0">
+            <!-- Today Collections Card -->
+            <div class="bg-white dark:bg-darkCard rounded-[1.25rem] p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-3 transition-colors hover:border-primary/30">
+                <div class="w-11 h-11 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center shrink-0 shadow-sm border border-emerald-100 dark:border-emerald-900/50">
                     <i class="ph-fill ph-trend-up text-xl"></i>
                 </div>
-                <div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap"><?php echo e(__('market.today_collections')); ?></p>
-                    <h4 class="text-lg font-black text-gray-800 dark:text-gray-100 leading-tight"><?php echo e(number_format($todayCollections, 1)); ?> <span class="text-[10px] font-normal text-gray-500"><?php echo e(__('market.currency')); ?></span></h4>
+                <div class="flex flex-col items-start">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-bold whitespace-nowrap"><?php echo e(__('market.today_collections')); ?></p>
+                    <div class="flex items-baseline gap-1 mt-0.5">
+                        <h4 class="text-xl font-black text-gray-800 dark:text-gray-100 leading-tight" dir="ltr"><?php echo e(number_format($todayCollections, 1)); ?></h4>
+                        <span class="text-[11px] font-bold text-gray-400"><?php echo e(__('market.currency')); ?></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -155,9 +173,18 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($totalCustomers > count($customers)): ?>
-                <button wire:click="loadMoreCustomers" class="w-full py-4 mt-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center justify-center gap-1 border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
-                    <?php echo e(__('market.load_more_customers')); ?> <i class="ph-bold ph-caret-down"></i>
-                </button>
+                <div class="mt-8 mb-4 flex justify-center">
+                    <button wire:click="loadMoreCustomers" class="group relative px-6 py-3 text-sm font-bold text-primary bg-primary/10 hover:bg-primary hover:text-white dark:bg-emerald-500/10 dark:hover:bg-emerald-500 dark:text-emerald-400 dark:hover:text-white rounded-full transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden shadow-sm hover:shadow-md hover:shadow-primary/20 active:scale-95">
+                        <span wire:loading.remove wire:target="loadMoreCustomers" class="flex items-center gap-2">
+                            <?php echo e(__('market.load_more_customers')); ?> 
+                            <i class="ph-bold ph-caret-down group-hover:translate-y-0.5 transition-transform"></i>
+                        </span>
+                        <span wire:loading wire:target="loadMoreCustomers" class="flex items-center gap-2">
+                            <i class="ph-bold ph-spinner animate-spin text-lg"></i> <?php echo e(__('market.updating')); ?>
+
+                        </span>
+                    </button>
+                </div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -328,9 +355,17 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($totalLedgerTransactions > count($ledgerTransactions)): ?>
-                    <button wire:click="loadMoreLedger" class="w-full py-4 mt-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center justify-center gap-1 border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
-                        <?php echo e(__('market.show_older_transactions')); ?> <i class="ph-bold ph-caret-down"></i>
-                    </button>
+                    <div class="mt-6 flex justify-center pb-2">
+                        <button wire:click="loadMoreLedger" class="group relative px-5 py-2.5 text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-full transition-all duration-300 flex items-center justify-center gap-2 active:scale-95">
+                            <span wire:loading.remove wire:target="loadMoreLedger" class="flex items-center gap-2">
+                                <?php echo e(__('market.show_older_transactions')); ?> <i class="ph-bold ph-caret-down group-hover:translate-y-0.5 transition-transform"></i>
+                            </span>
+                            <span wire:loading wire:target="loadMoreLedger" class="flex items-center gap-2">
+                                <i class="ph-bold ph-spinner animate-spin"></i> <?php echo e(__('market.updating')); ?>
+
+                            </span>
+                        </button>
+                    </div>
                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
