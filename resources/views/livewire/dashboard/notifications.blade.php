@@ -23,7 +23,7 @@
             @forelse($notifications as $notification)
                 <a wire:click="markAsRead('{{ $notification->id }}')"
                     class="dropdown-item preview-item py-3 border-bottom d-flex align-items-center"
-                    href="{{ route('dashboard.products.edit', $notification->data['product_id']) }}">
+                    href="{{ (isset($notification->data['product_id']) && Route::has('dashboard.products.edit')) ? route('dashboard.products.edit', $notification->data['product_id']) : '#' }}">
                     <div class="preview-thumbnail">
                         <i class="mdi mdi-alert-circle m-auto {{ !$notification->read_at ? 'text-danger' : 'text-muted' }}"
                             style="font-size: 1.25rem;"></i>
