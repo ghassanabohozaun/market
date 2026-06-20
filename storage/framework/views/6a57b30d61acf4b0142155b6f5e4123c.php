@@ -360,6 +360,7 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                             popup: 'animate-swalHide',
                                             backdrop: 'swal2-backdrop-hide'
                                         },
+                                        buttonsStyling: false,
                                         customClass: {
                                             popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b]',
                                             title: 'text-lg font-black text-gray-800 dark:text-gray-100',
