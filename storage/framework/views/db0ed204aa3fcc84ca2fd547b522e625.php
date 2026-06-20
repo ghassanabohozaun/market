@@ -19,6 +19,23 @@
                         secondary: '#3b82f6', // blue-500
                         dark: '#0f172a', // slate-900
                         darkCard: '#1e293b', // slate-800
+                    },
+                    keyframes: {
+                        warningPop: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '40%': { transform: 'scale(1.05)', opacity: '1' },
+                            '60%': { transform: 'scale(0.95)' },
+                            '80%': { transform: 'scale(1.02)' },
+                            '100%': { transform: 'scale(1)' },
+                        },
+                        swalHide: {
+                            '0%': { transform: 'scale(1) translateY(0)', opacity: '1' },
+                            '100%': { transform: 'scale(0.85) translateY(20px)', opacity: '0' },
+                        }
+                    },
+                    animation: {
+                        warningPop: 'warningPop 0.35s ease-out forwards',
+                        swalHide: 'swalHide 0.15s ease-in forwards',
                     }
                 }
             }

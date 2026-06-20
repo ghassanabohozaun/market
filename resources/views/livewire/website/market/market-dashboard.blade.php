@@ -326,6 +326,14 @@
                                         text: '{{ __('market.confirm_delete_transaction') }}',
                                         icon: 'warning',
                                         showCancelButton: true,
+                                        showClass: {
+                                            popup: 'animate-warningPop',
+                                            backdrop: 'swal2-backdrop-show'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate-swalHide',
+                                            backdrop: 'swal2-backdrop-hide'
+                                        },
                                         buttonsStyling: false,
                                         customClass: {
                                             popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b]',

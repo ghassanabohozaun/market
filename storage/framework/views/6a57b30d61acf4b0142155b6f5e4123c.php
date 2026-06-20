@@ -352,7 +352,14 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                         text: '<?php echo e(__('market.confirm_delete_transaction')); ?>',
                                         icon: 'warning',
                                         showCancelButton: true,
-                                        buttonsStyling: false,
+                                        showClass: {
+                                            popup: 'animate-warningPop',
+                                            backdrop: 'swal2-backdrop-show'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate-swalHide',
+                                            backdrop: 'swal2-backdrop-hide'
+                                        },
                                         customClass: {
                                             popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b]',
                                             title: 'text-lg font-black text-gray-800 dark:text-gray-100',
