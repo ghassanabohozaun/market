@@ -348,9 +348,15 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                 </button>
                                 <button type="button" x-data x-on:click="
                                     Swal.fire({
-                                        title: '<?php echo e(__('market.are_you_sure')); ?>',
-                                        text: '<?php echo e(__('market.confirm_delete_transaction')); ?>',
-                                        icon: 'warning',
+                                        html: `
+                                            <div class='flex flex-col items-center'>
+                                                <div class='w-16 h-16 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full flex items-center justify-center mb-4'>
+                                                    <i class='ph-fill ph-warning text-4xl animate-pulse'></i>
+                                                </div>
+                                                <h3 class='text-xl font-black text-gray-800 dark:text-gray-100 mb-2'><?php echo e(__('market.are_you_sure')); ?></h3>
+                                                <p class='text-sm font-medium text-gray-500 dark:text-gray-400'><?php echo e(__('market.confirm_delete_transaction')); ?></p>
+                                            </div>
+                                        `,
                                         showCancelButton: true,
                                         showClass: {
                                             popup: 'animate-warningPop',
@@ -362,9 +368,8 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                         },
                                         buttonsStyling: false,
                                         customClass: {
-                                            popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b]',
-                                            title: 'text-lg font-black text-gray-800 dark:text-gray-100',
-                                            htmlContainer: 'text-sm font-medium text-gray-500 dark:text-gray-400 mt-2',
+                                            popup: 'w-[90%] max-w-[20rem] rounded-[1.5rem] bg-white dark:bg-[#1e293b] !pt-6',
+                                            htmlContainer: '!m-0 !p-0',
                                             actions: 'gap-3 mt-6 flex w-full px-6 pb-2',
                                             confirmButton: 'flex-1 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 font-bold rounded-xl px-4 py-3 transition-colors',
                                             cancelButton: 'flex-1 bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 font-bold rounded-xl px-4 py-3 transition-colors'

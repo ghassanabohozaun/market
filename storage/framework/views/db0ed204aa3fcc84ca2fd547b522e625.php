@@ -23,9 +23,7 @@
                     keyframes: {
                         warningPop: {
                             '0%': { transform: 'scale(0.8)', opacity: '0' },
-                            '40%': { transform: 'scale(1.05)', opacity: '1' },
-                            '60%': { transform: 'scale(0.95)' },
-                            '80%': { transform: 'scale(1.02)' },
+                            '60%': { transform: 'scale(1.05)', opacity: '1' },
                             '100%': { transform: 'scale(1)' },
                         },
                         swalHide: {
@@ -34,8 +32,8 @@
                         }
                     },
                     animation: {
-                        warningPop: 'warningPop 0.35s ease-out forwards',
-                        swalHide: 'swalHide 0.15s ease-in forwards',
+                        warningPop: 'warningPop 0.15s ease-out forwards',
+                        swalHide: 'swalHide 0.1s ease-in forwards',
                     }
                 }
             }
