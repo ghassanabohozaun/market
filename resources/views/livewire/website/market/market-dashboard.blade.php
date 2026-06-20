@@ -119,11 +119,9 @@
             @endphp
             @foreach($customers as $idx => $customer)
                 @php
-                    $hash = 0;
-                    for ($i = 0; $i < mb_strlen($customer->name); $i++) {
-                        $hash = mb_ord(mb_substr($customer->name, $i, 1)) + (($hash << 5) - $hash);
-                    }
-                    $colorClass = $avatarColors[abs($hash) % count($avatarColors)];
+                    // Safe string to index hashing (prevents negative modulo & int overflow)
+                    $hashIndex = hexdec(substr(md5($customer->name), 0, 6)) % count($avatarColors);
+                    $colorClass = $avatarColors[$hashIndex];
                     $lastTx = $customer->transactions->first() ? $customer->transactions->first()->created_at->format('Y-m-d') : 'لا يوجد حركات';
                     $balance = $customer->balance;
                     $isDebt = $balance > 0;
